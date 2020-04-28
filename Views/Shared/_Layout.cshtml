@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - MELV</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+
+
+    <div class="navbar">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <img src="/Content/Images/logo.png" width="200" />
+                    @Html.ActionLink("MELV", "MainPage", "Home", new { area = "" }, new { @class = "navbar-brand", @style = "color: gray; float: none;" })
+                </div>
+                <ul class="nav navbar-nav">
+                    @Html.ActionLink("Prašymų sąrašas", "MainPage", "Home", new { @class = "btn btn-primary action" })
+                    @Html.ActionLink("Profilis", "MainPage", "Home", new { @class = "btn btn-primary action" })
+                    @Html.ActionLink("Atsijungti", "MainPage", "Home", new { @class = "btn btn-danger action" })
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

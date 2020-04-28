@@ -1,0 +1,18 @@
+﻿@model MELV_IS.Models.FoodPlan
+
+@{
+    ViewBag.Title = "Maisto plano peržiūra";
+}
+
+
+
+<h2>@Model.Title</h2>
+<br />
+<p style="white-space:pre; word-wrap:break-word">@Model.Text</p>
+<br />
+<h4>Kaina: @Model.Price</h4>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

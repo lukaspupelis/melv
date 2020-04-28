@@ -1,0 +1,64 @@
+﻿@model IEnumerable<MELV_IS.Models.FoodPlan>
+
+@{
+    ViewBag.Title = "FoodPlanList";
+}
+
+
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>Maisto Planai</h2>
+    <div>@Html.ActionLink("Naujas maisto planas", "FoodPlanForm", new { id = -1 }, new { @class = "btn btn-success" })</div>
+</div>
+
+<table class="table table-striped datatable">
+    <thead>
+        <tr style="background-color: lightblue">
+            <th style="width: 15%">
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th style="width: 53%">
+                @Html.DisplayNameFor(model => model.Text)
+            </th>
+            <th style="width: 7%">
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th style="width: 25%"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                <td style="white-space:pre; word-wrap:break-word">@Html.DisplayFor(modelItem => item.Text)</td>
+                <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                <td>
+                    @Html.ActionLink("Peržiūrėti", "FoodPlanPage", new { id = item.ID }, new { @class = "btn btn-primary action" })
+                    @Html.ActionLink("Redaguoti", "FoodPlanForm", new { id = item.ID }, new { @class = "btn btn-info action" })
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal_@item.ID">
+                        Šalinti
+                    </button>
+
+                    <div class="modal fade" id="exampleModal_@item.ID" role="dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">@item.Title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Uždaryti">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">Ar tikrai norite ištrinti?</div>
+                                <div class="modal-footer">
+                                    @Html.ActionLink("Šalinti", "removeFoodPlan", new { id = item.ID }, new { @class = "btn btn-primary action" })
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Uždaryti</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
