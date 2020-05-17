@@ -27,6 +27,10 @@ namespace MELV_IS.Models
         [Required(ErrorMessage = "Šis laukas privalomas")]
         public decimal? Price { get; set; }
 
+        [DisplayName("Ištrintas?")]
+        [Required]
+        public bool Removed { get; set; }
+
         [DisplayName("Kas sukūrė")]
         [Required]
         public int Administrator { get; set; }
@@ -35,12 +39,13 @@ namespace MELV_IS.Models
         {
         }
 
-        public FoodPlan(int id, string title, string text, decimal price, int admin)
+        public FoodPlan(int id, string title, string text, decimal price, bool removed, int admin)
         {
             ID = id;
             Title = title;
             Text = text;
             Price = price;
+            Removed = removed;
             Administrator = admin;
         }
 
@@ -49,7 +54,7 @@ namespace MELV_IS.Models
             List<FoodPlan> foodPlans = new List<FoodPlan>();
             string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
             MySqlConnection mySqlConnection = new MySqlConnection(conn);
-            string sqlquery = "select * from food_plans";
+            string sqlquery = "select * from food_plans where removed = 0";
             MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
             mySqlConnection.Open();
             MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
@@ -65,6 +70,7 @@ namespace MELV_IS.Models
                     Convert.ToString(item["title"]),
                     Convert.ToString(item["text"]),
                     Convert.ToDecimal(item["price"]),
+                    Convert.ToBoolean(item["removed"]),
                     Convert.ToInt32(item["fk_administrator"])
                 ));
             }
@@ -78,11 +84,12 @@ namespace MELV_IS.Models
             {
                 string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
                 MySqlConnection mySqlConnection = new MySqlConnection(conn);
-                string sqlquery = @"INSERT INTO food_plans(title,text,price,fk_administrator)VALUES(?title,?text,?price,?fk_admin);";
+                string sqlquery = @"INSERT INTO food_plans(title,text,price,removed,fk_administrator)VALUES(?title,?text,?price,?removed,?fk_admin);";
                 MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
                 mySqlCommand.Parameters.Add("?title", MySqlDbType.VarChar).Value = foodPlan.Title;
                 mySqlCommand.Parameters.Add("?text", MySqlDbType.VarChar).Value = foodPlan.Text;
                 mySqlCommand.Parameters.Add("?price", MySqlDbType.Decimal).Value = foodPlan.Price;
+                mySqlCommand.Parameters.Add("?removed", MySqlDbType.Bit).Value = 0;
                 mySqlCommand.Parameters.Add("?fk_admin", MySqlDbType.Int32).Value = 2;
                 mySqlConnection.Open();
                 mySqlCommand.ExecuteNonQuery();
@@ -139,6 +146,7 @@ namespace MELV_IS.Models
                 foodPlan.Title = Convert.ToString(item["title"]);
                 foodPlan.Text = Convert.ToString(item["text"]);
                 foodPlan.Price = Convert.ToDecimal(item["price"]);
+                foodPlan.Removed = Convert.ToBoolean(item["removed"]);
                 foodPlan.Administrator = Convert.ToInt32(item["fk_administrator"]);
             }
 
@@ -147,14 +155,20 @@ namespace MELV_IS.Models
 
         public static void deleteFoodPlan(int id)
         {
-            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
-            MySqlConnection mySqlConnection = new MySqlConnection(conn);
-            string sqlquery = @"DELETE FROM food_plans where id=?id";
-            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
-            mySqlCommand.Parameters.Add("?id", MySqlDbType.VarChar).Value = id;
-            mySqlConnection.Open();
-            mySqlCommand.ExecuteNonQuery();
-            mySqlConnection.Close();
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = @"UPDATE food_plans SET removed=1 WHERE id=?id";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?id", MySqlDbType.VarChar).Value = id;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }
