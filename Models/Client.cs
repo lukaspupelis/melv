@@ -5,11 +5,7 @@ using System.Web;
 
 namespace MELV_IS.Models
 {
-    public class Administrator : User
+    public class Client
     {
-        public Administrator(int id) : base(id)
-        {
-
-        }
     }
 }

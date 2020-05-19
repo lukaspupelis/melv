@@ -33,13 +33,14 @@ namespace MELV_IS.Models
 
         [DisplayName("Kas sukūrė")]
         [Required]
-        public int Administrator { get; set; }
+        public Administrator Administrator { get; set; }
 
         public FoodPlan()
         {
+            Administrator = new Administrator(2);
         }
 
-        public FoodPlan(int id, string title, string text, decimal price, bool removed, int admin)
+        public FoodPlan(int id, string title, string text, decimal price, bool removed, Administrator admin)
         {
             ID = id;
             Title = title;
@@ -71,7 +72,7 @@ namespace MELV_IS.Models
                     Convert.ToString(item["text"]),
                     Convert.ToDecimal(item["price"]),
                     Convert.ToBoolean(item["removed"]),
-                    Convert.ToInt32(item["fk_administrator"])
+                    new Administrator(Convert.ToInt32(item["fk_administrator"]))
                 ));
             }
 
@@ -147,7 +148,7 @@ namespace MELV_IS.Models
                 foodPlan.Text = Convert.ToString(item["text"]);
                 foodPlan.Price = Convert.ToDecimal(item["price"]);
                 foodPlan.Removed = Convert.ToBoolean(item["removed"]);
-                foodPlan.Administrator = Convert.ToInt32(item["fk_administrator"]);
+                foodPlan.Administrator = new Administrator(Convert.ToInt32(item["fk_administrator"]));
             }
 
             return foodPlan;

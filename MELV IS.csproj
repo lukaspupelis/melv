@@ -163,13 +163,20 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\FlightController.cs" />
+    <Compile Include="Controllers\FlightRequestController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PlansController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Administrator.cs" />
+    <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\EntertainmentPlan.cs" />
+    <Compile Include="Models\Flight.cs" />
+    <Compile Include="Models\FlightRequest.cs" />
     <Compile Include="Models\FoodPlan.cs" />
+    <Compile Include="Models\SportPlan.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -213,6 +220,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\FlightRequest\" />
+    <Folder Include="Views\Flight\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
