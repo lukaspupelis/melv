@@ -12,6 +12,7 @@ namespace MELV_IS.Models
 {
     public class User
     {
+        [Key]
         public int ID { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }

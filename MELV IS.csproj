@@ -217,10 +217,10 @@
     <Content Include="Views\Plans\FoodPlanList.cshtml" />
     <Content Include="Views\Plans\FoodPlanForm.cshtml" />
     <Content Include="Views\Plans\FoodPlanPage.cshtml" />
+    <Content Include="Views\FlightRequest\FlightCreationForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\FlightRequest\" />
     <Folder Include="Views\Flight\" />
   </ItemGroup>
   <ItemGroup>

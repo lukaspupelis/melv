@@ -29,6 +29,29 @@ namespace MELV_IS.Models
         {
         }
 
+        public SportPlan(int id)
+        {
+            ID = id;
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = "select * from sport_plans where id=?id";
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlCommand.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+            foreach (DataRow item in dt.Rows)
+            {
+                Title = Convert.ToString(item["title"]);
+                Text = Convert.ToString(item["text"]);
+                Price = Convert.ToDecimal(item["price"]);
+                Removed = Convert.ToBoolean(item["removed"]);
+                Administrator = new Administrator(Convert.ToInt32(item["fk_administrator"]));
+            }
+        }
+
         public SportPlan(int id, string title, string text, decimal price, bool removed, Administrator admin)
         {
             ID = id;

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<MELV_IS.Models.FlightRequest>
+
+@{
+    ViewBag.Title = "FlightCreationForm";
+}
+
+
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>Kelionių prašymai</h2>
+</div>
+<br />
+
+<table class="table table-striped datatable">
+    <thead>
+        <tr style="background-color: lightblue">
+            <th style="width: 34%">
+                @Html.DisplayNameFor(model => model.Direction)
+            </th>
+            <th style="width: 33%">
+                @Html.DisplayNameFor(model => model.DepartureDate)
+            </th>
+            <th style="width: 33%">
+                @Html.DisplayNameFor(model => model.ArrivalDate)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @{
+                        if (item.Direction)
+                        {
+                            <text>Marsas - Žemė</text>
+                        }
+                        else
+                        {
+                            <text>Žemė - Marsas</text>
+                        }
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.DepartureDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.ArrivalDate)</td>
+            </tr>
+        }
+    </tbody>
+</table>
