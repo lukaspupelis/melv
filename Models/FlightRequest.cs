@@ -30,6 +30,8 @@ namespace MELV_IS.Models
         public SportPlan SportPlan{ get; set; }
         public Client Client { get; set; }
 
+        public static DB DB = new DB();
+
         public FlightRequest()
         {
 
@@ -53,15 +55,8 @@ namespace MELV_IS.Models
         public static List<FlightRequest> selectFlightRequestsWithPlanData()
         {
             List<FlightRequest> flightRequests = new List<FlightRequest>();
-            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
-            MySqlConnection mySqlConnection = new MySqlConnection(conn);
-            string sqlquery = "select * from flight_requests"; // imti tik einancio menesio
-            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
-            mySqlConnection.Open();
-            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
-            DataTable dt = new DataTable();
-            mda.Fill(dt);
-            mySqlConnection.Close();
+            DB.loadQuery("select * from flight_requests where fk_flight IS NULL"); // imti tik einancio menesio
+            DataTable dt = DB.query();
 
             foreach (DataRow item in dt.Rows)
             {
@@ -72,7 +67,7 @@ namespace MELV_IS.Models
                     Convert.ToDateTime(item["departure_date"]),
                     Convert.ToDateTime(item["arrival_date"]),
                     Convert.ToDecimal(item["price"]),
-                    (item["fk_flight"] == System.DBNull.Value ? new Flight() : new Flight(Convert.ToInt32(item["fk_flight"]))),
+                    item["fk_flight"] == DBNull.Value ? new Flight() : new Flight(Convert.ToInt32(item["fk_flight"])),
                     new EntertainmentPlan(Convert.ToInt32(item["fk_entertainment_plan"])),
                     new FoodPlan(Convert.ToInt32(item["fk_food_plan"])),
                     new SportPlan(Convert.ToInt32(item["fk_sport_plan"])),

@@ -17,16 +17,9 @@ namespace MELV_IS.Models
 
         public Client(int id) : base(id)
         {
-            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
-            MySqlConnection mySqlConnection = new MySqlConnection(conn);
-            string sqlquery = "select * from clients where fk_user=?id";
-            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
-            mySqlCommand.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
-            mySqlConnection.Open();
-            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
-            DataTable dt = new DataTable();
-            mda.Fill(dt);
-            mySqlConnection.Close();
+            DB.loadQuery("select * from clients where fk_user=?id");
+            DB.Command.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
+            DataTable dt = DB.query();
             foreach (DataRow item in dt.Rows)
             {
                 BirthDate = Convert.ToString(item["birthdate"]);

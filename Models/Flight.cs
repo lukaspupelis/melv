@@ -21,6 +21,8 @@ namespace MELV_IS.Models
         public bool Confirmed { get; set; }
         public Administrator Administrator { get; set; }
 
+        public static DB DB = new DB();
+
         public Flight()
         {
 
@@ -29,16 +31,9 @@ namespace MELV_IS.Models
         public Flight(int id)
         {
             ID = id;
-            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
-            MySqlConnection mySqlConnection = new MySqlConnection(conn);
-            string sqlquery = "select * from flights where id=?id";
-            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
-            mySqlCommand.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
-            mySqlConnection.Open();
-            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
-            DataTable dt = new DataTable();
-            mda.Fill(dt);
-            mySqlConnection.Close();
+            DB.loadQuery("select * from flights where id=?id");
+            DB.Command.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
+            DataTable dt = DB.query();
             foreach (DataRow item in dt.Rows)
             {
                 Direction = Convert.ToBoolean(item["direction"]);

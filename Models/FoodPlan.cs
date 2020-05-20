@@ -35,6 +35,8 @@ namespace MELV_IS.Models
         [Required]
         public Administrator Administrator { get; set; }
 
+        public static DB DB = new DB();
+
         public FoodPlan()
         {
             Administrator = new Administrator(2);
@@ -43,16 +45,9 @@ namespace MELV_IS.Models
         public FoodPlan(int id)
         {
             ID = id;
-            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
-            MySqlConnection mySqlConnection = new MySqlConnection(conn);
-            string sqlquery = "select * from food_plans where id=?id";
-            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
-            mySqlCommand.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
-            mySqlConnection.Open();
-            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
-            DataTable dt = new DataTable();
-            mda.Fill(dt);
-            mySqlConnection.Close();
+            DB.loadQuery("select * from food_plans where id=?id");
+            DB.Command.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
+            DataTable dt = DB.query();
             foreach (DataRow item in dt.Rows)
             {
                 Title = Convert.ToString(item["title"]);
@@ -77,16 +72,8 @@ namespace MELV_IS.Models
         public static List<FoodPlan> selectFoodPlans()
         {
             List<FoodPlan> foodPlans = new List<FoodPlan>();
-            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
-            MySqlConnection mySqlConnection = new MySqlConnection(conn);
-            string sqlquery = "select * from food_plans where removed = 0";
-            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
-            mySqlConnection.Open();
-            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
-            DataTable dt = new DataTable();
-            mda.Fill(dt);
-            mySqlConnection.Close();
-
+            DB.loadQuery("select * from food_plans where removed = 0");
+            DataTable dt = DB.query();
             foreach (DataRow item in dt.Rows)
             {
                 foodPlans.Add(new FoodPlan
@@ -107,18 +94,13 @@ namespace MELV_IS.Models
         {
             try
             {
-                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
-                MySqlConnection mySqlConnection = new MySqlConnection(conn);
-                string sqlquery = @"INSERT INTO food_plans(title,text,price,removed,fk_administrator)VALUES(?title,?text,?price,?removed,?fk_admin);";
-                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
-                mySqlCommand.Parameters.Add("?title", MySqlDbType.VarChar).Value = foodPlan.Title;
-                mySqlCommand.Parameters.Add("?text", MySqlDbType.VarChar).Value = foodPlan.Text;
-                mySqlCommand.Parameters.Add("?price", MySqlDbType.Decimal).Value = foodPlan.Price;
-                mySqlCommand.Parameters.Add("?removed", MySqlDbType.Bit).Value = 0;
-                mySqlCommand.Parameters.Add("?fk_admin", MySqlDbType.Int32).Value = 2;
-                mySqlConnection.Open();
-                mySqlCommand.ExecuteNonQuery();
-                mySqlConnection.Close();
+                DB.loadQuery(@"INSERT INTO food_plans(title,text,price,removed,fk_administrator)VALUES(?title,?text,?price,?removed,?fk_admin);");
+                DB.Command.Parameters.Add("?title", MySqlDbType.VarChar).Value = foodPlan.Title;
+                DB.Command.Parameters.Add("?text", MySqlDbType.VarChar).Value = foodPlan.Text;
+                DB.Command.Parameters.Add("?price", MySqlDbType.Decimal).Value = foodPlan.Price;
+                DB.Command.Parameters.Add("?removed", MySqlDbType.Bit).Value = 0;
+                DB.Command.Parameters.Add("?fk_admin", MySqlDbType.Int32).Value = 2;
+                DB.execute();
                 return true;
             }
             catch (Exception)
@@ -131,18 +113,13 @@ namespace MELV_IS.Models
         {
             try
             {
-                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
-                MySqlConnection mySqlConnection = new MySqlConnection(conn);
-                string sqlquery = @"UPDATE food_plans SET title=?title, text=?text, price=?price, fk_administrator=?fk_admin WHERE id=?id";
-                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
-                mySqlCommand.Parameters.Add("?title", MySqlDbType.VarChar).Value = foodPlan.Title;
-                mySqlCommand.Parameters.Add("?text", MySqlDbType.VarChar).Value = foodPlan.Text;
-                mySqlCommand.Parameters.Add("?price", MySqlDbType.VarChar).Value = foodPlan.Price;
-                mySqlCommand.Parameters.Add("?fk_admin", MySqlDbType.VarChar).Value = 2;
-                mySqlCommand.Parameters.Add("?id", MySqlDbType.VarChar).Value = foodPlan.ID;
-                mySqlConnection.Open();
-                mySqlCommand.ExecuteNonQuery();
-                mySqlConnection.Close();
+                DB.loadQuery(@"UPDATE food_plans SET title=?title, text=?text, price=?price, fk_administrator=?fk_admin WHERE id=?id");
+                DB.Command.Parameters.Add("?title", MySqlDbType.VarChar).Value = foodPlan.Title;
+                DB.Command.Parameters.Add("?text", MySqlDbType.VarChar).Value = foodPlan.Text;
+                DB.Command.Parameters.Add("?price", MySqlDbType.VarChar).Value = foodPlan.Price;
+                DB.Command.Parameters.Add("?fk_admin", MySqlDbType.VarChar).Value = 2;
+                DB.Command.Parameters.Add("?id", MySqlDbType.VarChar).Value = foodPlan.ID;
+                DB.execute();
                 return true;
             }
             catch (Exception)
@@ -154,16 +131,9 @@ namespace MELV_IS.Models
         public static FoodPlan selectFoodPlan(int id)
         {
             FoodPlan foodPlan = new FoodPlan();
-            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
-            MySqlConnection mySqlConnection = new MySqlConnection(conn);
-            string sqlquery = "select * from food_plans where id=?id";
-            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
-            mySqlCommand.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
-            mySqlConnection.Open();
-            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
-            DataTable dt = new DataTable();
-            mda.Fill(dt);
-            mySqlConnection.Close();
+            DB.loadQuery("select * from food_plans where id=?id");
+            DB.Command.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
+            DataTable dt = DB.query();
 
             foreach (DataRow item in dt.Rows)
             {
@@ -182,14 +152,9 @@ namespace MELV_IS.Models
         {
             try
             {
-                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
-                MySqlConnection mySqlConnection = new MySqlConnection(conn);
-                string sqlquery = @"UPDATE food_plans SET removed=1 WHERE id=?id";
-                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
-                mySqlCommand.Parameters.Add("?id", MySqlDbType.VarChar).Value = id;
-                mySqlConnection.Open();
-                mySqlCommand.ExecuteNonQuery();
-                mySqlConnection.Close();
+                DB.loadQuery(@"UPDATE food_plans SET removed=1 WHERE id=?id");
+                DB.Command.Parameters.Add("?id", MySqlDbType.VarChar).Value = id;
+                DB.execute();
             }
             catch (Exception)
             {

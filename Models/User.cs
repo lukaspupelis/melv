@@ -19,20 +19,15 @@ namespace MELV_IS.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public string Phone { get; set; }
-        
+
+        public static DB DB = new DB();
+
         public User(int id)
         {
             ID = id;
-            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
-            MySqlConnection mySqlConnection = new MySqlConnection(conn);
-            string sqlquery = "select * from users where id=?id";
-            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
-            mySqlCommand.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
-            mySqlConnection.Open();
-            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
-            DataTable dt = new DataTable();
-            mda.Fill(dt);
-            mySqlConnection.Close();
+            DB.loadQuery("select * from users where id=?id");
+            DB.Command.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
+            DataTable dt = DB.query();
             foreach (DataRow item in dt.Rows)
             {
                 Name = Convert.ToString(item["name"]);

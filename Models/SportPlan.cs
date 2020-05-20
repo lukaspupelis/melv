@@ -25,6 +25,8 @@ namespace MELV_IS.Models
 
         public Administrator Administrator { get; set; }
 
+        public static DB DB = new DB();
+
         public SportPlan()
         {
         }
@@ -32,16 +34,9 @@ namespace MELV_IS.Models
         public SportPlan(int id)
         {
             ID = id;
-            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
-            MySqlConnection mySqlConnection = new MySqlConnection(conn);
-            string sqlquery = "select * from sport_plans where id=?id";
-            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
-            mySqlCommand.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
-            mySqlConnection.Open();
-            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
-            DataTable dt = new DataTable();
-            mda.Fill(dt);
-            mySqlConnection.Close();
+            DB.loadQuery("select * from sport_plans where id=?id");
+            DB.Command.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
+            DataTable dt = DB.query();
             foreach (DataRow item in dt.Rows)
             {
                 Title = Convert.ToString(item["title"]);
