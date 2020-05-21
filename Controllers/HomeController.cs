@@ -14,7 +14,24 @@ namespace MELV_IS.Controllers
     {
         public ActionResult MainPage()
         {
+            if (Session["admin"] == null)
+            {
+                Session["admin"] = false;
+            }
             return View();
+        }
+
+        public ActionResult changePermissions()
+        {
+            if ((bool)Session["admin"])
+            {
+                Session["admin"] = false;
+            }
+            else
+            {
+                Session["admin"] = true;
+            }
+            return RedirectToAction("MainPage");
         }
     }
 }

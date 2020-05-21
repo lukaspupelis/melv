@@ -28,6 +28,8 @@ namespace MELV_IS.Models
         public EntertainmentPlan EntertainmentPlan { get; set; }
         public FoodPlan FoodPlan { get; set; }
         public SportPlan SportPlan{ get; set; }
+
+        [DisplayName("Klientas")]
         public Client Client { get; set; }
 
         public static DB DB = new DB();
@@ -55,7 +57,7 @@ namespace MELV_IS.Models
         public static List<FlightRequest> selectFlightRequestsWithPlanData()
         {
             List<FlightRequest> flightRequests = new List<FlightRequest>();
-            DB.loadQuery("select * from flight_requests where fk_flight IS NULL"); // imti tik einancio menesio
+            DB.loadQuery("select * from flight_requests where fk_flight is null and month(current_date()) = month(departure_date) order by direction, departure_date");
             DataTable dt = DB.query();
 
             foreach (DataRow item in dt.Rows)

@@ -16,6 +16,20 @@ namespace MELV_IS.Controllers
         {
             List<FlightRequest> flightRequests = MELV_IS.Models.FlightRequest.selectFlightRequestsWithPlanData();
 
+            int distinctClients = flightRequests.Select(x => x.Client.ID).Distinct().Count();
+
+            ViewData["FlightCreationForm_Error"] = "";
+            if (distinctClients < 10)
+            {
+                ViewData["FlightCreationForm_Error"] = "Užsiregistravo per mažai žmonių!";
+                return View(flightRequests);
+            }
+
+
+
+            double[] dayRatings = new double[31];
+
+
             return View(flightRequests);
         }
     }

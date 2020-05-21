@@ -22,3 +22,11 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.toggleAdmin {
+    opacity: 0;
+}
+
+.toggleAdmin:hover {
+    opacity: 1;
+}

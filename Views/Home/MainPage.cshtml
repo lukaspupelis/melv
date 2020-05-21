@@ -5,3 +5,8 @@
 <div class="row">
     @Html.ActionLink("Maisto planai", "FoodPlanList", "Plans", null, new { @class = "btn btn-primary action" })
 </div>
+
+<div class="row toggleAdmin" style="margin-top: 200px;">
+    @Html.ActionLink("ADMIN/USER", "changePermissions", null, new { @class = "btn btn-primary action" })
+    @Session["admin"]
+</div>
