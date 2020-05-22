@@ -2,9 +2,27 @@
     ViewBag.Title = "Pagrindinis puslapis";
 }
 
-<div class="row">
-    @Html.ActionLink("Maisto planai", "FoodPlanList", "Plans", null, new { @class = "btn btn-primary action" })
-</div>
+@{
+    // ADMIN MAIN PAGE
+    if ((bool)Session["admin"])
+    {
+        <div class="row">
+            @Html.ActionLink("Maisto planai", "FoodPlanList", "Plans", null, new { @class = "btn btn-primary action" })
+        </div>
+        <br />
+        <div class="row">
+            @Html.ActionLink("Registruoti skrydį", "FlightCreationForm", "FlightRequest", null, new { @class = "btn btn-primary action" })
+        </div>
+    }
+    // USER MAIN PAGE
+    else
+    {
+        <div class="row">
+            @Html.ActionLink("Maisto planai", "FoodPlanList", "Plans", null, new { @class = "btn btn-primary action" })
+        </div>
+    }
+}
+
 
 <div class="row toggleAdmin" style="margin-top: 200px;">
     @Html.ActionLink("ADMIN/USER", "changePermissions", null, new { @class = "btn btn-primary action" })

@@ -44,5 +44,25 @@ namespace MELV_IS.Models
                 Administrator = new Administrator(Convert.ToInt32(item["fk_administrator"]));
             }
         }
+
+        public static bool insertFlight(DateTime date1, DateTime date2)
+        {
+            try
+            {
+                DB.loadQuery(@"INSERT INTO flights(direction,departure_date,arrival_date,price,confirmed,fk_administrator)VALUES(?direction,?departure_date,?arrival_date,?price,?confirmed,?fk_admin);");
+                DB.Command.Parameters.Add("?direction", MySqlDbType.Bit).Value = 0;
+                DB.Command.Parameters.Add("?departure_date", MySqlDbType.DateTime).Value = date1;
+                DB.Command.Parameters.Add("?arrival_date", MySqlDbType.DateTime).Value = date2;
+                DB.Command.Parameters.Add("?price", MySqlDbType.Decimal).Value = 1000000;
+                DB.Command.Parameters.Add("?confirmed", MySqlDbType.Bit).Value = 0;
+                DB.Command.Parameters.Add("?fk_admin", MySqlDbType.Int32).Value = 2;
+                DB.execute();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

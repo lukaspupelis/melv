@@ -19,9 +19,11 @@ namespace MELV_IS.Models
         public bool Direction { get; set; }
 
         [DisplayName("Išvykimo data")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime DepartureDate { get; set; }
 
         [DisplayName("Atvykimo data")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime ArrivalDate { get; set; }
         public decimal Price { get; set; }
         public Flight Flight { get; set; }
