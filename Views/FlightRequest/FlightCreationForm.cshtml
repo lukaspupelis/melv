@@ -19,21 +19,19 @@
         <span style="color: green; font-weight: bold"> arba @(((DateTime)ViewData["recc_day2"]).ToString("yyyy-MM-dd"))</span>
     }
 
-    if ((string)ViewData["FlightCreationForm_Error"] == "")
-    {
-        <br />
-        <br />
-        <div style="padding-bottom: 5px;">Pasirinkite išvykimo datą: </div>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div>
-                <input type="text" id="datepicker" onchange="enterFlightDate()">
-                <span style="padding-left: 20px;" id="secondDate"></span>
-            </div>
-            <div>
-                <a href="#" class="btn btn-success registerFlightButton" id="submit" style="margin-left: 20px;" >Registruoti naują skrydį</a>
-            </div>
+
+    <br />
+    <br />
+    <div style="padding-bottom: 5px;">Pasirinkite išvykimo datą: </div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <input type="text" id="datepicker" onchange="enterFlightDate()">
+            <span style="padding-left: 20px;" id="secondDate"></span>
         </div>
-    }
+        <div>
+            <a href="#" class="btn btn-success registerFlightButton" id="submit" style="margin-left: 20px;">Registruoti naują skrydį</a>
+        </div>
+    </div>
 }
 <br />
 <br />
