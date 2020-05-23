@@ -36,11 +36,17 @@ namespace MELV_IS.Models
             return dt;
         }
 
-        public void execute()
+        public long execute(bool returnId = false)
         {
+            long returnID = 0;
             Connection.Open();
             Command.ExecuteNonQuery();
+            if (returnId)
+            {
+                returnID = Command.LastInsertedId;
+            }
             Connection.Close();
+            return returnID;
         }
     }
 }

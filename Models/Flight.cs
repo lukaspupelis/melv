@@ -56,7 +56,13 @@ namespace MELV_IS.Models
                 DB.Command.Parameters.Add("?price", MySqlDbType.Decimal).Value = 1000000;
                 DB.Command.Parameters.Add("?confirmed", MySqlDbType.Bit).Value = 0;
                 DB.Command.Parameters.Add("?fk_admin", MySqlDbType.Int32).Value = 2;
+                long id = DB.execute(true);
+
+                DB.loadQuery(@"UPDATE flight_requests SET fk_flight = ?fk_flight WHERE departure_date = ?departure_date");
+                DB.Command.Parameters.Add("?fk_flight", MySqlDbType.Int32).Value = id;
+                DB.Command.Parameters.Add("?departure_date", MySqlDbType.DateTime).Value = date1;
                 DB.execute();
+
                 return true;
             }
             catch (Exception)
