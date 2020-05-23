@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<MELV_IS.Models.User>
+
+@{
     ViewBag.Title = "Pagrindinis puslapis";
 }
 
@@ -25,6 +27,19 @@
 
 
 <div class="row toggleAdmin" style="margin-top: 200px;">
-    @Html.ActionLink("ADMIN/USER", "changePermissions", null, new { @class = "btn btn-primary action" })
-    @Session["admin"]
+    @using (Html.BeginForm())
+    {
+        <select name="user" id="user">
+            @{
+                foreach (var item in Model)
+                {
+                    <option value="@item.ID">@item.Name  @item.LastName</option>
+                }
+            }
+        </select>
+        <input type="submit" value="Keisti vartotoją" class="btn btn-primary" />
+        @Session["user"]
+        <span> </span>
+        @Session["admin"]
+    }
 </div>

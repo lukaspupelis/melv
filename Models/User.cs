@@ -47,5 +47,26 @@ namespace MELV_IS.Models
             Password = password;
             Phone = phone;
         }
+
+        public static List<User> selectUsers()
+        {
+            List<User> users = new List<User>();
+            DB.loadQuery("select * from users");
+            DataTable dt = DB.query();
+            foreach (DataRow item in dt.Rows)
+            {
+                users.Add(new User
+                (
+                    Convert.ToInt32(item["id"]),
+                    Convert.ToString(item["name"]),
+                    Convert.ToString(item["last_name"]),
+                    Convert.ToString(item["email"]),
+                    Convert.ToString(item["password"]),
+                    Convert.ToString(item["phone"])
+                ));
+            }
+
+            return users;
+        }
     }
 }

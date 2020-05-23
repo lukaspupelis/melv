@@ -14,23 +14,34 @@ namespace MELV_IS.Controllers
     {
         public ActionResult MainPage()
         {
+            List<User> users = MELV_IS.Models.User.selectUsers();
+
             if (Session["admin"] == null)
             {
                 Session["admin"] = false;
             }
-            return View();
+            if (Session["user"] == null)
+            {
+                Session["user"] = 1;
+            }
+
+            return View(users);
         }
 
-        public ActionResult changePermissions()
+        [HttpPost]
+        public ActionResult MainPage(string user)
         {
-            if ((bool)Session["admin"])
-            {
-                Session["admin"] = false;
-            }
-            else
+            Session["user"] = user;
+
+            if (MELV_IS.Models.Administrator.isAdmin(user))
             {
                 Session["admin"] = true;
             }
+            else
+            {
+                Session["admin"] = false;
+            }
+            
             return RedirectToAction("MainPage");
         }
     }

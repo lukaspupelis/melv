@@ -59,7 +59,9 @@ namespace MELV_IS.Models
         public static List<FlightRequest> selectFlightRequestsWithPlanData()
         {
             List<FlightRequest> flightRequests = new List<FlightRequest>();
-            DB.loadQuery("select * from flight_requests where fk_flight is null and month(current_date()) = month(departure_date) order by direction, departure_date");
+            DB.loadQuery("select * from flight_requests where fk_flight is null " +
+                "and current_date() <= departure_date and current_date() + INTERVAL 30 DAY >= departure_date " +
+                "order by direction, departure_date");
             DataTable dt = DB.query();
 
             foreach (DataRow item in dt.Rows)
