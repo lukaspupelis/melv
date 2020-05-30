@@ -8,17 +8,30 @@
 <h2>Kelionių prašymai</h2>
 <br />
 
-<div style="color: red; font-weight: bold;">@ViewData["FlightCreationForm_Error"]</div>
 @{
-    if (ViewData["recc_day1"] != null)
+    if (ViewData["FlightCreationForm_Error0"] == "")
     {
-        <span style="color: green; font-weight: bold">Rekomenduojama išvykimo data: @(((DateTime)ViewData["recc_day1"]).ToString("yyyy-MM-dd"))</span>
+        if (ViewData["recc_day0"] != null)
+        {
+            <div style="color: green; font-weight: bold">Rekomenduojama išvykimo data (Žemė - Marsas): @(((DateTime)ViewData["recc_day0"]).ToString("yyyy-MM-dd"))</div>
+        }
     }
-    if (ViewData["recc_day2"] != null)
+    else
     {
-        <span style="color: green; font-weight: bold"> arba @(((DateTime)ViewData["recc_day2"]).ToString("yyyy-MM-dd"))</span>
+        <div style="color: red; font-weight: bold;">@ViewData["FlightCreationForm_Error0"]</div>
     }
 
+    if (ViewData["FlightCreationForm_Error1"] == "")
+    {
+        if (ViewData["recc_day1"] != null)
+        {
+            <div style="color: green; font-weight: bold">Rekomenduojama išvykimo data (Marsas - Žemė): @(((DateTime)ViewData["recc_day1"]).ToString("yyyy-MM-dd"))</div>
+        }
+    }
+    else
+    {
+        <div style="color: red; font-weight: bold;">@ViewData["FlightCreationForm_Error1"]</div>
+    }
 }
 
 <br />
@@ -26,6 +39,12 @@
 <div style="padding-bottom: 5px;">Pasirinkite išvykimo datą: </div>
 <div style="display: flex; justify-content: space-between; align-items: center;">
     <div>
+        <span>Kryptis: </span>
+        <select id="direction">
+            <option value="0">Žemė - Marsas</option>
+            <option value="1">Marsas - Žemė</option>
+        </select>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Išvykimo data: </span>
         <input type="text" id="datepicker" onchange="enterFlightDate()">
         <span style="padding-left: 20px;" id="secondDate"></span>
     </div>
@@ -87,7 +106,7 @@
 
         $('#submit').click(function (e) {
             e.preventDefault();
-            window.location.href = "@Url.Action("submit", "Flight")" + '?date1=' + $('#datepicker').val() + '&date2=' + $('#secondDate').text().slice(15);
+            window.location.href = "@Url.Action("submit", "Flight")" + '?date1=' + $('#datepicker').val() + '&date2=' + $('#secondDate').text().slice(15) + '&direction=' + $('#direction').find('option:selected').val();
         });
 
         function enterFlightDate() {
@@ -123,9 +142,8 @@
 }
 
 @*testavimas*@
-@*{
-        @for (int i = 1; i <= 31; i++)
-        {
-            <div>@(((double[])ViewData["dayRatings"])[i])</div>
-        }*
+
+@*@for (int i = 1; i <= 30; i++)
+    {
+        <div>@(((double[])ViewData["dayRatings"])[i])</div>
     }*@

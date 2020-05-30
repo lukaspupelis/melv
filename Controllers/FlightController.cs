@@ -17,11 +17,12 @@ namespace MELV_IS.Controllers
             return View();
         }
 
-        public ActionResult submit(string date1, string date2)
+        public ActionResult submit(string date1, string date2, string direction)
         {
             DateTime firstDate = Convert.ToDateTime(date1);
             DateTime secondDate = Convert.ToDateTime(date2);
-            MELV_IS.Models.Flight.insertFlight(firstDate, secondDate);
+            int directionConv = Convert.ToInt32(direction);
+            MELV_IS.Models.Flight.insertFlight(firstDate, secondDate, directionConv);
             return RedirectToAction("FlightCreationForm", "FlightRequest", new { area = "" });
         } 
     }

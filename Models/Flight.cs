@@ -43,12 +43,12 @@ namespace MELV_IS.Models
             }
         }
 
-        public static bool insertFlight(DateTime date1, DateTime date2)
+        public static bool insertFlight(DateTime date1, DateTime date2, int direction)
         {
             try
             {
                 DB.loadQuery(@"INSERT INTO flights(direction,departure_date,arrival_date,confirmed,fk_administrator)VALUES(?direction,?departure_date,?arrival_date,?confirmed,?fk_admin);");
-                DB.Command.Parameters.Add("?direction", MySqlDbType.Bit).Value = 0;
+                DB.Command.Parameters.Add("?direction", MySqlDbType.Bit).Value = direction;
                 DB.Command.Parameters.Add("?departure_date", MySqlDbType.DateTime).Value = date1;
                 DB.Command.Parameters.Add("?arrival_date", MySqlDbType.DateTime).Value = date2;
                 DB.Command.Parameters.Add("?confirmed", MySqlDbType.Bit).Value = 0;
