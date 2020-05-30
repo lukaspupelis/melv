@@ -119,10 +119,76 @@ namespace MELV_IS.Controllers
         }
 
         [HttpPost]
-        public DateTime calculateSecondDate(string firstDate)
+        public FlightDuration calculateSecondDate(string firstDate, string direction)
         {
-            DateTime date = Convert.ToDateTime(firstDate);
-            return date.AddMonths(1);
+            bool returning = direction == "1" ? true : false;
+
+            DateTime fstDate = Convert.ToDateTime(firstDate);
+
+            // # patikrinti, ar jau skaiciuota
+            FlightDuration flightDur = FlightDuration.findOrFail(fstDate, returning);
+            if (flightDur != null) return flightDur;// return flightDur;
+
+            // earth 149500000, mars 227900000
+            double startAvgDistance = returning ? 227900000 : 149500000; // km
+            double endAvgDistance = returning ? 149500000 : 227900000; // km
+
+            // earth 365.25, mars 686.97
+            double startOrbitPeriod = returning ? 686.97 : 365.25; // days
+            double endOrbitPeriod = returning ? 365.25 : 686.97; // days
+
+            // assuming average speed of 16 km/s
+            double spaceShipSpeed = 1382400; // km/d
+            double startStopFuelConsumption = 100000; // litres
+            double dailyFuelConsumption = 150; // litres
+            double fuelLitreCost = 1.5; // euros
+
+            // # apskaiciuot pozicijas pradines datos metu
+            double startRadialPos = calculatePlanetPosition(fstDate, startOrbitPeriod);
+            double endRadialPos = calculatePlanetPosition(fstDate, endOrbitPeriod);
+
+            // # while ( not at end position)
+            DateTime sndDate = new DateTime(fstDate.Ticks);
+            int limit = 0; // infinite loops are never fun
+            while (limit < 1500)
+            {
+                // #    apskaiciuot galine planeta po vienos dienos
+                sndDate = sndDate.AddDays(1);
+                double endPos = calculatePlanetPosition(sndDate, endOrbitPeriod);
+
+                double spaceShipDistance = (sndDate - fstDate).Days * spaceShipSpeed;
+
+                // straight line distance 
+                double currentAngle = Math.Abs(startRadialPos - endPos);
+                double distanceToPlanet = Math.Sqrt(Math.Pow(startAvgDistance, 2) + Math.Pow(endAvgDistance, 2)
+                - 2 * startAvgDistance * endAvgDistance * Math.Cos(currentAngle * 2 * Math.PI));
+
+                // #    patikrint ar trajektorija nekerta saules
+                if (0.4 < currentAngle && currentAngle < 0.6)
+                    distanceToPlanet *= 1.3; // modify distance to account for parabolic trajectory
+
+                // #    patikrinti, ar pasieke planeta
+                if (spaceShipDistance >= distanceToPlanet) break;
+                limit++;
+            }
+
+            // # paskaiciuot kiek dienu truks
+            // # paskaiciuot kura pagal dienas
+            double fuelCost = (2 * startStopFuelConsumption + (sndDate - fstDate).Days * dailyFuelConsumption) * fuelLitreCost;
+
+            // # issaugot duombazej
+            flightDur = new FlightDuration(-1, returning ? fstDate : sndDate, returning ? sndDate : fstDate, returning, fuelCost);
+            FlightDuration.insertSecondDate(flightDur);
+
+            // # return
+            return flightDur;
+        }
+
+        public static double calculatePlanetPosition(DateTime date, double orbitPeriod)
+        {
+            // date of alignment - mars, sun and earth in one line
+            DateTime zeroPointDate = new DateTime(2014, 04, 8);
+            return (date - zeroPointDate).Days % orbitPeriod / orbitPeriod;
         }
     }
 }
