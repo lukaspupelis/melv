@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Services;
 using MELV_IS.Models;
 using MySql.Data.MySqlClient;
 
@@ -119,7 +120,7 @@ namespace MELV_IS.Controllers
         }
 
         [HttpPost]
-        public FlightDuration calculateSecondDate(string firstDate, string direction)
+        public JsonResult calculateSecondDate(string firstDate, string direction)
         {
             bool returning = direction == "1" ? true : false;
 
@@ -127,7 +128,7 @@ namespace MELV_IS.Controllers
 
             // # patikrinti, ar jau skaiciuota
             FlightDuration flightDur = FlightDuration.findOrFail(fstDate, returning);
-            if (flightDur != null) return flightDur;// return flightDur;
+            if (flightDur != null) return Json(flightDur, JsonRequestBehavior.AllowGet);// return flightDur;
 
             // earth 149500000, mars 227900000
             double startAvgDistance = returning ? 227900000 : 149500000; // km
@@ -181,7 +182,7 @@ namespace MELV_IS.Controllers
             FlightDuration.insertSecondDate(flightDur);
 
             // # return
-            return flightDur;
+            return Json(flightDur, JsonRequestBehavior.AllowGet);
         }
 
         public static double calculatePlanetPosition(DateTime date, double orbitPeriod)

@@ -127,16 +127,43 @@
                 url: 'calculateSecondDate',
                 type: 'POST',
                 contentType: 'application/json',
-                data: '{firstDate: "' + new Date(Date.parse($('#datepicker').val())).toISOString().slice(0, 10) + '" }',
+                data: '{firstDate: "' + new Date(Date.parse($('#datepicker').val())).toISOString().slice(0, 10) + '", direction: "' + $('#direction').find('option:selected').val() + '" }',
                 success: function (result) {
                     $('#datepicker').val(new Date(Date.parse($('#datepicker').val())).toISOString().slice(0, 10));
-                    $("#secondDate").text("Atvykimo data: " + new Date(result).toISOString().slice(0, 10));
+                    var res;
+                    if ($('#direction').find('option:selected').val() == 0) {
+                        res = result.DateMars;
+                    } else {
+                        res = result.DateEarth;
+                    }
+                    console.log(result);
+                    $("#secondDate").text("Atvykimo data: " + convertToJavaScriptDate(res));
                     $('.registerFlightButton').show();
                 },
                 failure: function (error) {
                     console.log(error);
                 }
             });
+        }
+
+        function convertToJavaScriptDate(value) {
+            var pattern = /Date\(([^)]+)\)/;
+            var results = pattern.exec(value);
+            return getFormattedDate(parseFloat(results[1]));
+        }
+
+        function getFormattedDate(date) {
+            var formatDate = new Date(date);
+            var month = formatDate.getMonth() + 1;
+            var day = formatDate.getDate();
+            var year = formatDate.getFullYear();
+            if (month < 10) {
+                month = '0' + month;
+            }
+            if (day < 10) {
+                day = '0' + day;
+            }
+            return year + "-" + month + "-" + day;
         }
     </script>
 }
