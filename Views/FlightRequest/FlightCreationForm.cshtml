@@ -9,7 +9,7 @@
 <br />
 
 @{
-    if (ViewData["FlightCreationForm_Error0"] == "")
+    if ((string)ViewData["FlightCreationForm_Error0"] == "")
     {
         if (ViewData["recc_day0"] != null)
         {
@@ -21,7 +21,7 @@
         <div style="color: red; font-weight: bold;">@ViewData["FlightCreationForm_Error0"]</div>
     }
 
-    if (ViewData["FlightCreationForm_Error1"] == "")
+    if ((string)ViewData["FlightCreationForm_Error1"] == "")
     {
         if (ViewData["recc_day1"] != null)
         {
