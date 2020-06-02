@@ -33,7 +33,7 @@
                         <div>
                             <div>
                                 <span>Kryptis: </span>
-                                <select id="direction">
+                                <select id="direction"  onchange="enterFlightDate()">
                                     <option value="0">Žemė - Marsas</option>
                                     <option value="1">Marsas - Žemė</option>
                                 </select>
@@ -47,7 +47,7 @@
                             <br />
                             <br />
                             <div>
-                                <a href="#" class="btn btn-success registerFlightButton" style="margin-left:250px;" id="submit">Registruoti naują skrydį</a>
+                                <a href="#" class="btn btn-success registerFlightButton" style="margin-left:250px;" id="submit">Sukurti naują kelionės prašymą</a>
                             </div>
                         </div>
                     </div>
@@ -115,9 +115,8 @@
 @section scripts{
     <script>
         $(function () {
-            $("#datepicker").datepicker({ dateFormat: "yy-mm-dd", stepMonths: 0 });
+            $("#datepicker").datepicker({ dateFormat: "yy-mm-dd", minDate: '+1m' });
         });
-        //enterFlightDate();
 
         $('#submit').click(function (e) {
             e.preventDefault();

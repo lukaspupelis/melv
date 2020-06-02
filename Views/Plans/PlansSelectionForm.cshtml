@@ -3,27 +3,35 @@
 }
 
 
-<h2>PlansSelectionForm</h2>
-<h2 id="date1">@ViewBag.Date1</h2>
-<h2 id="date2">@ViewBag.Date2</h2>
-<h2 id="direction">@ViewBag.Direction</h2>
-<h2 id="price">@ViewBag.Price</h2>
+<h2>Planų pasirinkimas:</h2>
+<h2 id="date1" hidden>@ViewBag.Date1</h2>
+<h2 id="date2" hidden>@ViewBag.Date2</h2>
+<h2 id="direction" hidden>@ViewBag.Direction</h2>
+<h2 id="price" hidden>@ViewBag.Price</h2>
 
-<div>
-    Maisto Planas:
-    @Html.DropDownList("FoodPlans", (List<SelectListItem>)ViewBag.FoodPlans)
-</div>
-<div>
-    Pramogų Planas:
-    @Html.DropDownList("EntertainmentPlans", (List<SelectListItem>)ViewBag.EntertainmentPlans)
-</div>
-<div>
-    Sporto Planas:
-    @Html.DropDownList("SportPlans", (List<SelectListItem>)ViewBag.SportPlans)
-</div>
-<div>
-    <a href="#" class="btn btn-success registerFlightButton" id="submit" style="margin-left: 20px;">Registruoti naują skrydį</a>
-</div>
+<table>
+    <tr>
+        <td>Maisto Planas:</td>
+        <td align="right">@Html.DropDownList("FoodPlans", (List<SelectListItem>)ViewBag.FoodPlans)</td>
+    </tr>
+    <tr>
+        <td>Pramogų Planas:</td>
+        <td align="right">@Html.DropDownList("EntertainmentPlans", (List<SelectListItem>)ViewBag.EntertainmentPlans)</td>
+    </tr>
+    <tr>
+        <td>Sporto Planas:</td>
+        <td align="right">@Html.DropDownList("SportPlans", (List<SelectListItem>)ViewBag.SportPlans)</td>
+    </tr>
+    <tr>
+        <td></td><td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td align="right"><a href="#" class="btn btn-success registerFlightButton" id="submit" style="margin-left: 20px;">Pasirinkti planus</a></td>
+    </tr>
+
+
+</table>
 
 
 
