@@ -28,6 +28,28 @@ namespace MELV_IS.Models
 
         public static DB DB = new DB();
 
+        public static List<Payment> SelectPayments(int id)
+        {
+            List<Payment> payments = new List<Payment>();
+            DB.loadQuery("select * from payments where fk_flight=?id");
+            DB.Command.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
+            DataTable dt = DB.query();
+            foreach (DataRow item in dt.Rows)
+            {
+                payments.Add(new Payment
+                    (
+                        Convert.ToInt32(item["ID"]),
+                        Convert.ToDateTime(item["Date"]),
+                        Convert.ToString(item["CardNumber"]),
+                        Convert.ToDecimal(item["Sum"]),
+                        new Flight(Convert.ToInt32(item["fk_flight"])),
+                        new Client(Convert.ToInt32(item["fk_client"]))
+                    ));
+            }
+
+            return payments;
+        }
+
         public Payment(int id)
         {
             ID = id;

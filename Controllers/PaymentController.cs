@@ -8,6 +8,16 @@ namespace MELV_IS.Controllers
 {
     public class PaymentController : Controller
     {
+        //flight id
+        public static Boolean ReturnPayments(int id)
+        {
+            MELV_IS.Models.Payment.SelectPayments(id);
+
+
+
+            return true;
+        }
+
         // GET: Payment
         public ActionResult Index()
         {

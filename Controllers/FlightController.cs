@@ -24,11 +24,25 @@ namespace MELV_IS.Controllers
             return View(flights);
         }
 
+        public void CancelFlight(int id)
+        {
+
+        }
+
         public ActionResult SelectedFlight(int id)
         {
             Flight flight = MELV_IS.Models.Flight.SelectFlightWithData(id);
 
             return View("FlightPage",flight);
+        }
+
+        public ActionResult UpdateFlight(int id)
+        {
+            MELV_IS.Models.Flight.UpdateFlight(id);
+
+            Flight flight = MELV_IS.Models.Flight.SelectFlightWithData(id);
+            ViewBag.Updated = "Skrydis patvirtintas!";
+            return View("FlightPage", flight);
         }
 
         public ActionResult submit(string date1, string date2, string direction)
