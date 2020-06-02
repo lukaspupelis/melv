@@ -4,105 +4,107 @@
     ViewBag.Title = "FlightCreationForm";
 }
 
+<body onload="enterFlightDate()">
 
-<h2>Kelionių prašymai</h2>
-<br />
+    <h2>Kelionių prašymai</h2>
+    <br />
 
-@{
-    if ((string)ViewData["FlightCreationForm_Error0"] == "")
-    {
-        if (ViewData["recc_day0"] != null)
+    @{
+        if ((string)ViewData["FlightCreationForm_Error0"] == "")
         {
-            <div style="color: green; font-weight: bold">Rekomenduojama išvykimo data (Žemė - Marsas): @(((DateTime)ViewData["recc_day0"]).ToString("yyyy-MM-dd"))</div>
+            if (ViewData["recc_day0"] != null)
+            {
+                <div style="color: green; font-weight: bold">Rekomenduojama išvykimo data (Žemė - Marsas): @(((DateTime)ViewData["recc_day0"]).ToString("yyyy-MM-dd"))</div>
+            }
+        }
+        else
+        {
+            <div style="color: red; font-weight: bold;">@ViewData["FlightCreationForm_Error0"]</div>
+        }
+
+        if ((string)ViewData["FlightCreationForm_Error1"] == "")
+        {
+            if (ViewData["recc_day1"] != null)
+            {
+                <div style="color: green; font-weight: bold">Rekomenduojama išvykimo data (Marsas - Žemė): @(((DateTime)ViewData["recc_day1"]).ToString("yyyy-MM-dd"))</div>
+            }
+        }
+        else
+        {
+            <div style="color: red; font-weight: bold;">@ViewData["FlightCreationForm_Error1"]</div>
         }
     }
-    else
-    {
-        <div style="color: red; font-weight: bold;">@ViewData["FlightCreationForm_Error0"]</div>
-    }
 
-    if ((string)ViewData["FlightCreationForm_Error1"] == "")
-    {
-        if (ViewData["recc_day1"] != null)
-        {
-            <div style="color: green; font-weight: bold">Rekomenduojama išvykimo data (Marsas - Žemė): @(((DateTime)ViewData["recc_day1"]).ToString("yyyy-MM-dd"))</div>
-        }
-    }
-    else
-    {
-        <div style="color: red; font-weight: bold;">@ViewData["FlightCreationForm_Error1"]</div>
-    }
-}
-
-<br />
-<br />
-<div style="padding-bottom: 5px;">Pasirinkite išvykimo datą: </div>
-<div style="display: flex; justify-content: space-between; align-items: center;">
-    <div>
-        <span>Kryptis: </span>
-        <select id="direction">
-            <option value="0">Žemė - Marsas</option>
-            <option value="1">Marsas - Žemė</option>
-        </select>
-        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Išvykimo data: </span>
-        <input type="text" id="datepicker" onchange="enterFlightDate()">
-        <span style="padding-left: 20px;" id="secondDate"></span>
+    <br />
+    <br />
+    <div style="padding-bottom: 5px;">Pasirinkite išvykimo datą: </div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <span>Kryptis: </span>
+            <select id="direction">
+                <option value="0">Žemė - Marsas</option>
+                <option value="1">Marsas - Žemė</option>
+            </select>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Išvykimo data: </span>
+            <input type="text" id="datepicker" autocomplete="off" onchange="enterFlightDate()">
+            <span style="padding-left: 20px;" id="secondDate"></span>
+        </div>
+        <div>
+            <a href="#" class="btn btn-success registerFlightButton" id="submit" style="margin-left: 20px;">Registruoti naują skrydį</a>
+        </div>
     </div>
-    <div>
-        <a href="#" class="btn btn-success registerFlightButton" id="submit" style="margin-left: 20px;">Registruoti naują skrydį</a>
-    </div>
-</div>
 
-<br />
-<br />
+    <br />
+    <br />
 
-<table class="table table-striped datatable">
-    <thead>
-        <tr style="background-color: lightblue">
-            <th style="width: 25%">
-                @Html.DisplayNameFor(model => model.Direction)
-            </th>
-            <th style="width: 25%">
-                @Html.DisplayNameFor(model => model.DepartureDate)
-            </th>
-            <th style="width: 25%">
-                @Html.DisplayNameFor(model => model.ArrivalDate)
-            </th>
-            <th style="width: 25%">
-                @Html.DisplayNameFor(model => model.Client)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @{
-                        if (item.Direction)
-                        {
-                            <text>Marsas - Žemė</text>
-                        }
-                        else
-                        {
-                            <text>Žemė - Marsas</text>
-                        }
-                    }
-                </td>
-                <td>@Html.DisplayFor(modelItem => item.DepartureDate)</td>
-                <td>@Html.DisplayFor(modelItem => item.ArrivalDate)</td>
-                <td>@Html.DisplayFor(modelItem => item.Client.Name) @Html.DisplayFor(modelItem => item.Client.LastName)</td>
+    <table class="table table-striped datatable">
+        <thead>
+            <tr style="background-color: lightblue">
+                <th style="width: 25%">
+                    @Html.DisplayNameFor(model => model.Direction)
+                </th>
+                <th style="width: 25%">
+                    @Html.DisplayNameFor(model => model.DepartureDate)
+                </th>
+                <th style="width: 25%">
+                    @Html.DisplayNameFor(model => model.ArrivalDate)
+                </th>
+                <th style="width: 25%">
+                    @Html.DisplayNameFor(model => model.Client)
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @{
+                            if (item.Direction)
+                            {
+                                <text>Marsas - Žemė</text>
+                            }
+                            else
+                            {
+                                <text>Žemė - Marsas</text>
+                            }
+                        }
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.DepartureDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ArrivalDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Client.Name) @Html.DisplayFor(modelItem => item.Client.LastName)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
 
 @section scripts{
     <script>
         $(function () {
             $("#datepicker").datepicker({ dateFormat: "yy-mm-dd", stepMonths: 0 });
         });
-        enterFlightDate();
+
 
         $('#submit').click(function (e) {
             e.preventDefault();

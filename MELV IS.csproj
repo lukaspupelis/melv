@@ -267,6 +267,7 @@
     <Content Include="Views\Plans\FoodPlanForm.cshtml" />
     <Content Include="Views\Plans\FoodPlanPage.cshtml" />
     <Content Include="Views\FlightRequest\FlightCreationForm.cshtml" />
+    <Content Include="Views\Plans\PlansSelectionForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -3,43 +3,140 @@
 @{
     ViewBag.Title = "Pagrindinis puslapis";
 }
+<body onload="enterFlightDate()">
+    @{
+        // ADMIN MAIN PAGE
+        if ((bool)Session["admin"])
+        {
+            <div class="row">
+                @Html.ActionLink("Maisto planai", "FoodPlanList", "Plans", null, new { @class = "btn btn-primary action" })
+            </div>
+            <br />
+            <div class="row">
+                @Html.ActionLink("Registruoti skrydį", "FlightCreationForm", "FlightRequest", null, new { @class = "btn btn-primary action" })
+            </div>
+        }
+        // USER MAIN PAGE
+        else
+        {
+            <div class="row">
+                @Html.ActionLink("Maisto planai", "FoodPlanList", "Plans", null, new { @class = "btn btn-primary action" })
+            </div>
 
-@{
-    // ADMIN MAIN PAGE
-    if ((bool)Session["admin"])
-    {
-        <div class="row">
-            @Html.ActionLink("Maisto planai", "FoodPlanList", "Plans", null, new { @class = "btn btn-primary action" })
-        </div>
-        <br />
-        <div class="row">
-            @Html.ActionLink("Registruoti skrydį", "FlightCreationForm", "FlightRequest", null, new { @class = "btn btn-primary action" })
-        </div>
+
+            <br />
+            <br />
+            <div style="padding-bottom: 5px;">Pasirinkite išvykimo datą: </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <span>Kryptis: </span>
+                    <select id="direction">
+                        <option value="0">Žemė - Marsas</option>
+                        <option value="1">Marsas - Žemė</option>
+                    </select>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Išvykimo data: </span>
+                    <input type="text" id="datepicker" autocomplete="off" onchange="enterFlightDate()">
+                    <span style="padding-left: 20px;" id="secondDate"></span>
+                </div>
+                <div>
+                    <a href="#" class="btn btn-success registerFlightButton" id="submit" style="margin-left: 20px;">Registruoti naują skrydį</a>
+                </div>
+            </div>
+
+            <br />
+            <br />
+
+        }
     }
-    // USER MAIN PAGE
-    else
-    {
-        <div class="row">
-            @Html.ActionLink("Maisto planai", "FoodPlanList", "Plans", null, new { @class = "btn btn-primary action" })
-        </div>
-    }
-}
 
 
-<div class="row toggleAdmin" style="margin-top: 200px;">
-    @using (Html.BeginForm())
-    {
-        <select name="user" id="user">
-            @{
-                foreach (var item in Model)
-                {
-                    <option value="@item.ID">@item.Name  @item.LastName</option>
+    <div class="row toggleAdmin" style="margin-top: 200px;">
+        @using (Html.BeginForm())
+        {
+            <select name="user" id="user">
+                @{
+                    foreach (var item in Model)
+                    {
+                        <option value="@item.ID">@item.Name  @item.LastName</option>
+                    }
                 }
+            </select>
+            <input type="submit" value="Keisti vartotoją" class="btn btn-primary" />
+            @Session["user"]
+            <span> </span>
+            @Session["admin"]
+        }
+    </div>
+
+</body>
+
+@section scripts{
+    <script>
+        $(function () {
+            $("#datepicker").datepicker({ dateFormat: "yy-mm-dd", stepMonths: 0 });
+        });
+        //enterFlightDate();
+
+        $('#submit').click(function (e) {
+            e.preventDefault();
+            window.location.href = "@Url.Action("submitFlightRequestDates", "FlightRequest")" + '?date1=' + $('#datepicker').val() + '&date2=' + $('#secondDate').text().slice(15) + '&direction=' + $('#direction').find('option:selected').val();
+        });
+
+        function enterFlightDate() {
+            //tikrinti ar ne tuscia, ar ne nesamone, ar sitam menesi sitais metais
+            if ($('#datepicker').val() == "") {
+                $("#secondDate").text("");
+                $('.registerFlightButton').hide();
+                return;
             }
-        </select>
-        <input type="submit" value="Keisti vartotoją" class="btn btn-primary" />
-        @Session["user"]
-        <span> </span>
-        @Session["admin"]
-    }
-</div>
+
+            if (Date.parse($('#datepicker').val() == NaN)) {
+                $("#secondDate").text("");
+                $('.registerFlightButton').hide();
+                return;
+            }
+
+            jQuery.ajax({
+                url: 'FlightRequest/calculateSecondDate',
+                type: 'POST',
+                contentType: 'application/json',
+                data: '{firstDate: "' + new Date(Date.parse($('#datepicker').val())).toISOString().slice(0, 10) + '", direction: "' + $('#direction').find('option:selected').val() + '" }',
+                success: function (result) {
+                    $('#datepicker').val(new Date(Date.parse($('#datepicker').val())).toISOString().slice(0, 10));
+                    var res;
+                    if ($('#direction').find('option:selected').val() == 0) {
+                        res = result.DateMars;
+                    } else {
+                        res = result.DateEarth;
+                    }
+                    console.log(result);
+                    $("#secondDate").text("Atvykimo data: " + convertToJavaScriptDate(res));
+                    $('.registerFlightButton').show();
+                },
+                failure: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        function convertToJavaScriptDate(value) {
+            var pattern = /Date\(([^)]+)\)/;
+            var results = pattern.exec(value);
+            return getFormattedDate(parseFloat(results[1]));
+        }
+
+        function getFormattedDate(date) {
+            var formatDate = new Date(date);
+            var month = formatDate.getMonth() + 1;
+            var day = formatDate.getDate();
+            var year = formatDate.getFullYear();
+            if (month < 10) {
+                month = '0' + month;
+            }
+            if (day < 10) {
+                day = '0' + day;
+            }
+            return year + "-" + month + "-" + day;
+        }
+    </script>
+}

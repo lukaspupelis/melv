@@ -79,5 +79,13 @@ namespace MELV_IS.Controllers
             MELV_IS.Models.FoodPlan.deleteFoodPlan(id);
             return RedirectToAction("FoodPlanList");
         }
+
+        public ActionResult PlansSelectionForm(string date1, string date2, string direction)
+        {
+            ViewBag.Date1 = date1;
+            ViewBag.Date2 = date2;
+            ViewBag.Direction = direction;
+            return View();
+        }
     }
 }

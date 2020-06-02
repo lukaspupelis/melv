@@ -191,5 +191,10 @@ namespace MELV_IS.Controllers
             DateTime zeroPointDate = new DateTime(2014, 04, 8);
             return (date - zeroPointDate).Days % orbitPeriod / orbitPeriod;
         }
+
+        public ActionResult submitFlightRequestDates(string date1, string date2, string direction)
+        {
+            return RedirectToAction("PlansSelectionForm", "Plans", new { date1 = date1, date2 = date2, direction = direction});
+        }
     }
 }
