@@ -204,6 +204,7 @@ namespace MELV_IS.Controllers
             ViewBag.date2 = date2;
             ViewBag.direction = direction;
             ViewBag.price = price;
+            ViewBag.finalPrice = calculateFinalPrice(price, foodPlanId, entertainmentPlanId, sportPlanId);
             ViewBag.foodPlanId = foodPlanId;
             ViewBag.foodPlan = foodPlan;
             ViewBag.entertainmentPlanId = entertainmentPlanId;
@@ -212,6 +213,16 @@ namespace MELV_IS.Controllers
             ViewBag.sportPlan = sportPlan;
 
             return View("FlightRequestSummaryForm");
+        }
+
+        public double calculateFinalPrice(string price, string foodPlanId, string entertainmentPlanId, string sportPlanId)
+        {
+            double sum = Convert.ToDouble(price);
+            sum += (double)(new FoodPlan(Convert.ToInt32(foodPlanId)).Price);
+            sum += (double)(new EntertainmentPlan(Convert.ToInt32(entertainmentPlanId)).Price);
+            sum += (double)(new SportPlan(Convert.ToInt32(sportPlanId)).Price);
+
+            return sum;
         }
 
         public ActionResult submitFlightRequest(string date1, string date2, string direction, string price, string foodPlanId, string entertainmentPlanId, string sportPlanId) 

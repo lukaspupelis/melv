@@ -2,95 +2,120 @@
     ViewBag.Title = "FlightRequestSummaryForm";
 }
 
-<h2>FlightRequestSummaryForm</h2>
+<h2>Skrydžio prašymo suvestinė</h2>
 
-<div>
-    <p>
-        Išskridimo data:
-
-        <text id="date1">@ViewBag.date1</text>
-    </p>
-    <p>
-        Atskridimo data:
-        <text id="date2">@ViewBag.date2</text>
-    </p>
-    <p>
-        Skrydžio kryptis:
-        @{
-            if (ViewBag.direction == "1")
-            {
-                <text>Marsas -> Žemė</text>
+<table>
+    <tr>
+        <td>
+            Išskridimo data:
+        </td>
+        <td align="right">
+            <text id="date1">@ViewBag.date1</text>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Atskridimo data:
+        </td>
+        <td align="right">
+            <text id="date2">@ViewBag.date2</text>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Skrydžio kryptis:
+        </td>
+        <td align="right">
+            @{
+                if (ViewBag.direction == "1")
+                {
+                    <text>Marsas -> Žemė</text>
+                }
+                else
+                {
+                    <text>Žemė -> Marsas</text>
+                }
             }
-            else
-            {
-                <text>Žemė -> Marsas</text>
-            }
-        }
-        <text hidden id="direction">@ViewBag.direction</text>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Skrydžio kaina:
+        </td>
+        <td align="right">
+            <text>@ViewBag.finalPrice</text>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Pramogų planas:
+        </td>
+        <td align="right">
+            <text>@ViewBag.entertainmentPlan</text>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Maisto planas:
+        </td>
+        <td align="right">
+            <text>@ViewBag.foodPlan</text>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Sporto planas:
+        </td>
+        <td align="right">
+            <text>@ViewBag.sportPlan</text>
+        </td>
+    </tr>
+    <tr>
+        <td>
+        </td>
+        <td align="right">
 
-    </p>
-    <p>
-        Skrydžio kaina:
-        <text id="price">@ViewBag.price</text>
-    </p>
-    <p>
-        Pramogų planas:
-        <text id="ePlanId" hidden>@ViewBag.entertainmentPlanId</text>
-        <text>@ViewBag.entertainmentPlan</text>
-    </p>
-    <p>
-        Maisto planas:
-        <text id="fPlanId" hidden>@ViewBag.foodPlanId</text>
-        <text>@ViewBag.foodPlan</text>
-    </p>
-    <p>
-        Sporto planas:
-        <text id="sPlanId" hidden>@ViewBag.sportPlanId</text>
-        <text>@ViewBag.sportPlan</text>
-    </p>
+            <button type="button" class = "btn btn-success registerFlightButton" data-toggle="modal" data-target="#popup">
+                Pateikti naują kelionės prašymą
+            </button>
 
-    <p>
-        <a href="#" class="btn btn-success registerFlightButton" id="submit" style="margin-left: 20px;">Registruoti naują skrydį</a>
-    </p>
+            <div class="modal fade" id="popup" role="dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body" align="center">Ar tikrai norite pridėti skrydžio prašymą</div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-success registerFlightButton" id="submit" style="margin-left: 20px;">Taip</a>
+                            @Html.ActionLink("Ne", "MainPage", "Home", null, new { @class="btn btn-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+    
+</table>
 
-</div>
+<text hidden id="direction">@ViewBag.direction</text>
+<text hidden id="price">@ViewBag.price</text>
+<text id="ePlanId" hidden>@ViewBag.entertainmentPlanId</text>
+<text id="fPlanId" hidden>@ViewBag.foodPlanId</text>
+<text id="sPlanId" hidden>@ViewBag.sportPlanId</text>
+
+
 
 @section scripts{
     <script>
         $(function () {
             $("#submit").click(function (event) {
                 event.preventDefault();
-                $('<div title="Patvirtinimo iššoktukas"></div>').dialog({
-                    open: function (event, ui) {
-                        $(this).html("Pridėti kelionės prašymą?");
-                    },
-                    close: function () {
-                        $(this).remove();
-                    },
-                    resizable: false,
-                    height: 140,
-                    modal: true,
-                    buttons: {
-                        'Taip': function () {
-                            $(this).dialog('close');
-                            window.location.href = "@Url.Action("submitFlightRequest", "FlightRequest")"
+                window.location.href = "@Url.Action("submitFlightRequest", "FlightRequest")"
                                 + '?date1=' + $('#date1').text() + '&date2=' + $('#date2').text() + '&price=' + $('#price').text()
                                 + '&direction=' + $('#direction').text()
                                 + '&foodPlanID=' + $('#fPlanId').text()
                                 + '&entertainmentPlanId=' + $('#ePlanId').text()
                                 + '&sportPlanId=' + $('#sPlanId').text()
-
-                        },
-                        'Ne': function () {
-                            $(this).dialog('close');
-                            window.location.href = "@Url.Action("cancelSubmission", "FlightRequest")"
-                        }
-                    }
-                });
             });
         });
-
-        
     </script>
 }
 
