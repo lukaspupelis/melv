@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Pagrindinis puslapis";
 }
+
     <body onload="enterFlightDate()">
         @{
             // ADMIN MAIN PAGE
@@ -15,48 +16,8 @@
                 <div class="row">
                     @Html.ActionLink("Registruoti skrydį", "FlightCreationForm", "FlightRequest", null, new { @class = "btn btn-primary action" })
                 </div>
-                <br />
                 <div class="row">
                     @Html.ActionLink("Skrydžių sąrašas", "FlightList", "Flight", null, new { @class = "btn btn-primary action" })
-                </div>
-            }
-            // USER MAIN PAGE
-            else
-            {
-                <div class="row">
-                    @Html.ActionLink("Maisto planai", "FoodPlanList", "Plans", null, new { @class = "btn btn-primary action" })
-                </div>
-
-
-                <br />
-                <br />
-                <div style="padding-bottom: 5px;">Pasirinkite išvykimo datą: </div>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <span>Kryptis: </span>
-                        <select id="direction">
-                            <option value="0">Žemė - Marsas</option>
-                            <option value="1">Marsas - Žemė</option>
-                        </select>
-                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Išvykimo data: </span>
-                        <input type="text" id="datepicker" autocomplete="off" onchange="enterFlightDate()">
-                        <span style="padding-left: 20px;" id="secondDate"></span>
-                    </div>
-                    <div>
-                        <a href="#" class="btn btn-success registerFlightButton" id="submit" style="margin-left: 20px;">Registruoti naują skrydį</a>
-                    </div>
-                </div>
-    <body onload="enterFlightDate()">
-        @{
-            // ADMIN MAIN PAGE
-            if ((bool)Session["admin"])
-            {
-                <div class="row">
-                    @Html.ActionLink("Maisto planai", "FoodPlanList", "Plans", null, new { @class = "btn btn-primary action" })
-                </div>
-                <br />
-                <div class="row">
-                    @Html.ActionLink("Registruoti skrydį", "FlightCreationForm", "FlightRequest", null, new { @class = "btn btn-primary action" })
                 </div>
             }
             // USER MAIN PAGE
