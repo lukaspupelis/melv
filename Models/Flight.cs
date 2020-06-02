@@ -15,7 +15,13 @@ namespace MELV_IS.Models
         [Key]
         public int ID { get; set; }
         public bool Direction { get; set; }
+
+        [DisplayName("Išvykimo data")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime DepartureDate { get; set; }
+
+        [DisplayName("Atvykimo data")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime ArrivalDate { get; set; }
         public bool Confirmed { get; set; }
         public Administrator Administrator { get; set; }
@@ -114,6 +120,28 @@ namespace MELV_IS.Models
             {
                 return false;
             }
+        }
+
+        public static List<Flight> selectClientFlights(int clientid)
+        {
+            List<Flight> flights = new List<Flight>();
+            DB.loadQuery("select f.id, f.direction, f.departure_date, f.arrival_date, f.confirmed, f.fk_administrator, fr.price from flight_requests fr left join flights f on fr.fk_flight=f.id where fr.fk_client=?id and f.departure_date > now()");
+            DB.Command.Parameters.Add("?id", MySqlDbType.Int32).Value = clientid;
+            DataTable dt = DB.query();
+            Flight flight = new Flight();
+            foreach (DataRow item in dt.Rows)
+            {
+                flight.ID = Convert.ToInt32(item["id"]);
+                flight.Direction = Convert.ToBoolean(item["direction"]);
+                flight.DepartureDate = Convert.ToDateTime(item["departure_date"]);
+                flight.ArrivalDate = Convert.ToDateTime(item["arrival_date"]);
+                flight.Confirmed = Convert.ToBoolean(item["confirmed"]);
+                flight.Administrator = new Administrator(Convert.ToInt32(item["fk_administrator"]));
+                HttpContext.Current.Session["user_price" + flight.ID] = Convert.ToDecimal(item["price"]);
+            }
+            flights.Add(flight);
+
+            return flights;
         }
     }
 }

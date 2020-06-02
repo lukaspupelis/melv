@@ -38,6 +38,6 @@ namespace MELV_IS.Controllers
             int directionConv = Convert.ToInt32(direction);
             MELV_IS.Models.Flight.insertFlight(firstDate, secondDate, directionConv);
             return RedirectToAction("FlightCreationForm", "FlightRequest", new { area = "" });
-        } 
+        }
     }
 }
