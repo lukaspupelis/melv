@@ -54,16 +54,16 @@ namespace MELV_IS.Models
             Client = client;
         }
 
-        public static bool insertFoodPlan(FoodPlan foodPlan)
+        public static bool insertPayment(Payment payment)
         {
             try
             {
-                DB.loadQuery(@"INSERT INTO food_plans(title,text,price,removed,fk_administrator)VALUES(?title,?text,?price,?removed,?fk_admin);");
-                DB.Command.Parameters.Add("?title", MySqlDbType.VarChar).Value = foodPlan.Title;
-                DB.Command.Parameters.Add("?text", MySqlDbType.VarChar).Value = foodPlan.Text;
-                DB.Command.Parameters.Add("?price", MySqlDbType.Decimal).Value = foodPlan.Price;
-                DB.Command.Parameters.Add("?removed", MySqlDbType.Bit).Value = 0;
-                DB.Command.Parameters.Add("?fk_admin", MySqlDbType.Int32).Value = 2;
+                DB.loadQuery(@"INSERT INTO payments(date,card_number,sum,fk_flight,fk_client)VALUES(?date,?card_number,?sum,?fk_flight,?fk_client);");
+                DB.Command.Parameters.Add("?date", MySqlDbType.DateTime).Value = payment.Date;
+                DB.Command.Parameters.Add("?card_number", MySqlDbType.VarChar).Value = payment.CardNumber;
+                DB.Command.Parameters.Add("?sum", MySqlDbType.Decimal).Value = payment.Sum;
+                DB.Command.Parameters.Add("?fk_flight", MySqlDbType.Int32).Value = payment.Flight;
+                DB.Command.Parameters.Add("?fk_client", MySqlDbType.Int32).Value = payment.Client;
                 DB.execute();
                 return true;
             }
