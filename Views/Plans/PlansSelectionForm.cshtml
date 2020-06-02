@@ -2,10 +2,45 @@
     ViewBag.Title = "PlansSelectionForm";
 }
 
-    <h2>PlansSelectionForm</h2>
-    <h2>@ViewBag.Date1</h2>
-    <h2>@ViewBag.Date2</h2>
-    <h2>@ViewBag.Direction</h2>
+
+<h2>PlansSelectionForm</h2>
+<h2 id="date1">@ViewBag.Date1</h2>
+<h2 id="date2">@ViewBag.Date2</h2>
+<h2 id="direction">@ViewBag.Direction</h2>
+<h2 id="price">@ViewBag.Price</h2>
+
+<div>
+    Maisto Planas:
+    @Html.DropDownList("FoodPlans", (List<SelectListItem>)ViewBag.FoodPlans)
+</div>
+<div>
+    Pramogų Planas:
+    @Html.DropDownList("EntertainmentPlans", (List<SelectListItem>)ViewBag.EntertainmentPlans)
+</div>
+<div>
+    Sporto Planas:
+    @Html.DropDownList("SportPlans", (List<SelectListItem>)ViewBag.SportPlans)
+</div>
+<div>
+    <a href="#" class="btn btn-success registerFlightButton" id="submit" style="margin-left: 20px;">Registruoti naują skrydį</a>
+</div>
 
 
+
+@section scripts{
+    <script>
+        $('#submit').click(function (e) {
+            e.preventDefault();
+            window.location.href = "@Url.Action("submitSelectedPlans", "Plans")"
+                + '?date1=' + $('#date1').text() + '&date2=' + $('#date2').text() + '&price=' + $('#price').text()
+                + '&direction=' + $('#direction').text()
+                + '&foodPlanID=' + $('#FoodPlans').find('option:selected').val()
+                + '&foodPlan=' + $('#FoodPlans').find('option:selected').text()
+                + '&entertainmentPlanId=' + $('#EntertainmentPlans').find('option:selected').val()
+                + '&entertainmentPlan=' + $('#EntertainmentPlans').find('option:selected').text()
+                + '&sportPlanId=' + $('#SportPlans').find('option:selected').val()
+                + '&sportPlan=' + $('#SportPlans').find('option:selected').text();
+        });
+    </script>
+}
 

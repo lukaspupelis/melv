@@ -81,5 +81,34 @@ namespace MELV_IS.Models
 
             return flightRequests;
         }
+
+        public static bool insertFlightRequest(bool direction, DateTime fstDate, DateTime sndDate, double price, int ePlan, int fPlan, int sPlan, int client)
+        {
+            // INSERT INTO `flight_requests` (`id`, `direction`, `departure_date`, `arrival_date`, `price`, `fk_flight`, `fk_entertainment_plan`, `fk_food_plan`, `fk_sport_plan`, `fk_client`) 
+            // VALUES (NULL, '0', '0', '0', '0', NULL, '1', '28', '1', '8');
+
+
+            try
+            {
+                DB.loadQuery(@"INSERT INTO `flight_requests` (`id`, `direction`, `departure_date`, `arrival_date`, `price`, `fk_flight`, `fk_entertainment_plan`, `fk_food_plan`, `fk_sport_plan`, `fk_client`) 
+                                      VALUES (NULL, ?dir, ?fstDate, ?sndDate, ?price, NULL, ?ePlan, ?fPlan, ?sPlan, ?client);");
+                DB.Command.Parameters.Add("?dir", MySqlDbType.Bit).Value = direction;
+                DB.Command.Parameters.Add("?fstDate", MySqlDbType.Date).Value = fstDate;
+                DB.Command.Parameters.Add("?sndDate", MySqlDbType.Date).Value = sndDate;
+                DB.Command.Parameters.Add("?price", MySqlDbType.Double).Value = price;
+                DB.Command.Parameters.Add("?ePlan", MySqlDbType.Int32).Value = ePlan;
+                DB.Command.Parameters.Add("?fPlan", MySqlDbType.Int32).Value = fPlan;
+                DB.Command.Parameters.Add("?sPlan", MySqlDbType.Int32).Value = sPlan;
+                DB.Command.Parameters.Add("?client", MySqlDbType.Int32).Value = client;
+
+
+                DB.execute();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

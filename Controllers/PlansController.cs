@@ -80,12 +80,36 @@ namespace MELV_IS.Controllers
             return RedirectToAction("FoodPlanList");
         }
 
-        public ActionResult PlansSelectionForm(string date1, string date2, string direction)
+        public ActionResult PlansSelectionForm(string date1, string date2, string direction, string price)
         {
             ViewBag.Date1 = date1;
             ViewBag.Date2 = date2;
             ViewBag.Direction = direction;
+            ViewBag.Price = price;
+
+
+            var bla = 
+
+            ViewBag.FoodPlans =          FoodPlan.selectFoodPlans().                  Select(x => new SelectListItem() { Value = x.ID.ToString(), Text = x.Title }).ToList();
+            ViewBag.EntertainmentPlans = EntertainmentPlan.selectEntertainmentPlans().Select(x => new SelectListItem() { Value = x.ID.ToString(), Text = x.Title }).ToList();
+            ViewBag.SportPlans =         SportPlan.selectSportPlans().                Select(x => new SelectListItem() { Value = x.ID.ToString(), Text = x.Title }).ToList();
+
+
+
             return View();
         }
+
+        public ActionResult submitSelectedPlans(string date1, string date2, string direction, string price, string foodPlanId, string foodPlan,
+            string entertainmentPlanId, string entertainmentPlan, string sportPlanId, string sportPlan)
+        {
+            // some damn ugly code
+            return RedirectToAction("submitFlightRequestSelectedPlans", "FlightRequest", new { date1 = date1, date2 = date2, direction = direction, price = price, 
+                foodPlanId = foodPlanId, foodPlan = foodPlan,
+                entertainmentPlanId = entertainmentPlanId, entertainmentPlan = entertainmentPlan,
+                sportPlanId = sportPlanId, sportPlan = sportPlan
+            });
+        }
+
+        
     }
 }

@@ -47,6 +47,27 @@ namespace MELV_IS.Models
             }
         }
 
+        public static List<FoodPlan> selectEntertainmentPlans()
+        {
+            List<FoodPlan> foodPlans = new List<FoodPlan>();
+            DB.loadQuery("select * from entertainment_plans where removed = 0");
+            DataTable dt = DB.query();
+            foreach (DataRow item in dt.Rows)
+            {
+                foodPlans.Add(new FoodPlan
+                (
+                    Convert.ToInt32(item["id"]),
+                    Convert.ToString(item["title"]),
+                    Convert.ToString(item["text"]),
+                    Convert.ToDecimal(item["price"]),
+                    Convert.ToBoolean(item["removed"]),
+                    new Administrator(Convert.ToInt32(item["fk_administrator"]))
+                ));
+            }
+
+            return foodPlans;
+        }
+
         public EntertainmentPlan(int id, string title, string text, decimal price, bool removed, Administrator admin)
         {
             ID = id;

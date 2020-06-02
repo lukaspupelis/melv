@@ -25,7 +25,7 @@ namespace MELV_IS.Controllers
             for (int iii = 0; iii < 2; iii++)
             {
                 List<FlightRequest> flightRequests = new List<FlightRequest>();
-                foreach(var item in allFlightRequests.Where(x => x.Direction == (iii == 0 ? false : true)))
+                foreach (var item in allFlightRequests.Where(x => x.Direction == (iii == 0 ? false : true)))
                 {
                     flightRequests.Add(item);
                 }
@@ -34,7 +34,7 @@ namespace MELV_IS.Controllers
 
                 if (distinctClients < 10)
                 {
-                    ViewData["FlightCreationForm_Error"+iii] = "Užsiregistravo per mažai žmonių!";
+                    ViewData["FlightCreationForm_Error" + iii] = "Užsiregistravo per mažai žmonių!";
                     break;
                 }
 
@@ -106,16 +106,16 @@ namespace MELV_IS.Controllers
 
                 if (maxVal < 10)
                 {
-                    ViewData["FlightCreationForm_Error"+iii] = "Užsiregistravo per mažai žmonių!";
+                    ViewData["FlightCreationForm_Error" + iii] = "Užsiregistravo per mažai žmonių!";
                     return View(flightRequests);
                 }
 
                 if (maxVal >= 10)
                 {
-                    ViewData["recc_day"+iii] = new DateTime(nextMonthDate.Year, nextMonthDate.Month, maxDay);
+                    ViewData["recc_day" + iii] = new DateTime(nextMonthDate.Year, nextMonthDate.Month, maxDay);
                 }
             }
-            
+
             return View(allFlightRequests);
         }
 
@@ -192,9 +192,40 @@ namespace MELV_IS.Controllers
             return (date - zeroPointDate).Days % orbitPeriod / orbitPeriod;
         }
 
-        public ActionResult submitFlightRequestDates(string date1, string date2, string direction)
+        public ActionResult submitFlightRequestDates(string date1, string date2, string direction, string price)
         {
-            return RedirectToAction("PlansSelectionForm", "Plans", new { date1 = date1, date2 = date2, direction = direction});
+            return RedirectToAction("PlansSelectionForm", "Plans", new { date1 = date1, date2 = date2, direction = direction, price = price});
+        }
+
+        public ActionResult submitFlightRequestSelectedPlans(string date1, string date2, string direction, string price, string foodPlanId, string foodPlan,
+            string entertainmentPlanId, string entertainmentPlan, string sportPlanId, string sportPlan)
+        {
+            ViewBag.date1 = date1;
+            ViewBag.date2 = date2;
+            ViewBag.direction = direction;
+            ViewBag.price = price;
+            ViewBag.foodPlanId = foodPlanId;
+            ViewBag.foodPlan = foodPlan;
+            ViewBag.entertainmentPlanId = entertainmentPlanId;
+            ViewBag.entertainmentPlan = entertainmentPlan;
+            ViewBag.sportPlanId = sportPlanId;
+            ViewBag.sportPlan = sportPlan;
+
+            return View("FlightRequestSummaryForm");
+        }
+
+        public ActionResult submitFlightRequest(string date1, string date2, string direction, string price, string foodPlanId, string entertainmentPlanId, string sportPlanId) 
+        {
+            FlightRequest.insertFlightRequest(direction == "1", Convert.ToDateTime(date1), Convert.ToDateTime(date2), Convert.ToDouble(price),
+                Convert.ToInt32(entertainmentPlanId), Convert.ToInt32(foodPlanId), Convert.ToInt32(sportPlanId), Convert.ToInt32(Session["user"]));
+
+
+            return RedirectToAction("MainPage", "Home");
+        }
+
+        public ActionResult cancelSubmission()
+        {
+            return RedirectToAction("MainPage", "Home");
         }
     }
 }

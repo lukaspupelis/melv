@@ -12,6 +12,7 @@ namespace MELV_IS.Models
 {
     public class FlightDuration
     {
+        [Key]
         public int ID { get; set; }
         public DateTime DateMars { get; set; }
         public DateTime DateEarth { get; set; }
