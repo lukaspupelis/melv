@@ -55,11 +55,31 @@
                 <div style="height: 500px; width: 40%">
                     <div style="border: 1px solid black; border-radius: 5px; padding: 5px; padding-bottom: 20px; margin-bottom: 10px; height: 245px;">
                         <h4>Patvirtinta kelionė iš Žemės į Marsą</h4>
-                        @Html.ActionLink("Peržiūrėti", "MainPage", "Home", null, new { @class = "btn btn-primary action", @style="float: right;" })
+                        @{
+                            if ((int)Session["flight_mars"] != -1)
+                            {
+                                <text>Informacija:</text>
+                                <br />
+                                <text>Kaina: </text> @Session["user_price" + Session["flight_mars"]]
+                                <br />
+                                <text>Išvykimo data: </text> @Session["flight_mars_ddate"]
+                                Html.ActionLink("Peržiūrėti", "SelectedFlight", "Flight", new { id = Session["flight_mars"] }, new { @class = "btn btn-primary action", @style = "float: right;" });
+                            }
+                        }
                     </div>
                     <div style="border: 1px solid black; border-radius: 5px; padding: 5px; padding-bottom: 20px; height: 245px;">
                         <h4>Patvirtinta kelionė iš Marso į Žemę</h4>
-                        @Html.ActionLink("Peržiūrėti", "MainPage", "Home", null, new { @class = "btn btn-primary action", @style="float: right;" })
+                        @{
+                            if ((int)Session["flight_earth"] != -1)
+                            {
+                                <text>Informacija:</text>
+                                <br />
+                                <text>Kaina: </text> @Session["user_price" + Session["flight_earth"]]
+                                <br />
+                                <text>Išvykimo data: </text> @Session["flight_earth_ddate"]
+                                @Html.ActionLink("Peržiūrėti", "SelectedFlight", "Flight", new { id = Session["flight_earth"] }, new { @class = "btn btn-primary action", @style = "float: right;" });
+                            }
+                        }
                     </div>
                 </div>
                 </div>
