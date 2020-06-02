@@ -57,6 +57,14 @@ namespace MELV_IS.Models
             return flights;
         }
 
+        public static void UpdateFlight(int id)
+        {
+            //UPDATE flights SET confirmed = 1 WHERE id = 11
+            DB.loadQuery(@"UPDATE flights SET confirmed=1 WHERE id=?id");
+            DB.Command.Parameters.Add("?id", MySqlDbType.Bit).Value = id;
+            DB.execute();
+        }
+
         public static Flight SelectFlightWithData(int id)
         {
             Flight flight = new Flight();
