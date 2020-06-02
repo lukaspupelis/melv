@@ -27,7 +27,6 @@ namespace MELV_IS.Models
 
         }
 
-        //---------------Edvinas-------------------
         public Flight(int id, bool direction, DateTime departureDate, DateTime arrivalDate, bool confirmed, Administrator admin)
         {
             ID = id;
@@ -57,7 +56,24 @@ namespace MELV_IS.Models
             }
             return flights;
         }
-        //-----------------------------------
+
+        public static Flight SelectFlightWithData(int id)
+        {
+            Flight flight = new Flight();
+            DB.loadQuery("select * from flights where id=?id");
+            DB.Command.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
+            DataTable dt = DB.query();
+            foreach (DataRow item in dt.Rows)
+            {
+                flight.ID = Convert.ToInt32(item["ID"]);
+                flight.Direction = Convert.ToBoolean(item["direction"]);
+                flight.DepartureDate = Convert.ToDateTime(item["departure_date"]);
+                flight.ArrivalDate = Convert.ToDateTime(item["arrival_date"]);
+                flight.Confirmed = Convert.ToBoolean(item["confirmed"]);
+                flight.Administrator = new Administrator(Convert.ToInt32(item["fk_administrator"]));
+            }
+            return flight;
+        }
 
         public Flight(int id)
         {
