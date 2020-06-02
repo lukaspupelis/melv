@@ -17,6 +17,15 @@ namespace MELV_IS.Controllers
             return View();
         }
 
+        //----------------------------------------- Edvinas----------
+        public ActionResult SelectAllFlights()
+        {
+            List<Flight> flights = MELV_IS.Models.Flight.SelectFlights();
+
+            return View(flights);
+        }
+
+        //-------------------------------------------
         public ActionResult submit(string date1, string date2, string direction)
         {
             DateTime firstDate = Convert.ToDateTime(date1);

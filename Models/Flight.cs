@@ -27,6 +27,38 @@ namespace MELV_IS.Models
 
         }
 
+        //---------------Edvinas-------------------
+        public Flight(int id, bool direction, DateTime departureDate, DateTime arrivalDate, bool confirmed, Administrator admin)
+        {
+            ID = id;
+            Direction = direction;
+            DepartureDate = departureDate;
+            ArrivalDate = arrivalDate;
+            Confirmed = confirmed;
+            Administrator = admin;
+        }
+
+        public static List<Flight> SelectFlights()
+        {
+            List<Flight> flights = new List<Flight>();
+            DB.loadQuery("select * from flights");
+            DataTable dt = DB.query();
+            foreach(DataRow item in dt.Rows)
+            {
+                flights.Add(new Flight
+                    (
+                        Convert.ToInt32(item[0]),
+                        Convert.ToBoolean(item[1]),
+                        Convert.ToDateTime(item[2]),
+                        Convert.ToDateTime(item[3]),
+                        Convert.ToBoolean(item[4]),
+                        new Administrator(Convert.ToInt32(item[5]))
+                    ));
+            }
+            return flights;
+        }
+        //-----------------------------------
+
         public Flight(int id)
         {
             ID = id;
