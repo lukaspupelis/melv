@@ -273,12 +273,9 @@
     <Content Include="Views\Plans\PlansSelectionForm.cshtml" />
     <Content Include="Views\FlightRequest\FlightRequestSummaryForm.cshtml" />
     <Content Include="Views\Flight\FlightList.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\Payment\PaymentForm.cshtml" />
     <Content Include="Views\Payment\PaymentPage.cshtml" />
-=======
     <Content Include="Views\Flight\FlightPage.cshtml" />
->>>>>>> 0d6d5873134523b7f2fb57a5247f6fc92881f377
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
