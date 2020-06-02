@@ -21,22 +21,45 @@
             {
                 <br />
                 <br />
-                <div style="padding-bottom: 5px;">Pasirinkite išvykimo datą: </div>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <span>Kryptis: </span>
-                        <select id="direction">
-                            <option value="0">Žemė - Marsas</option>
-                            <option value="1">Marsas - Žemė</option>
-                        </select>
-                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Išvykimo data: </span>
-                        <input type="text" id="datepicker" autocomplete="off" onchange="enterFlightDate()">
-                        <span style="padding-left: 20px;" id="secondDate"></span>
+                <div style="display: flex; justify-content: space-between;">
+                    <div style="border: 1px solid black; border-radius: 5px; padding: 5px; padding-bottom: 20px; margin-right: 5px; height: 500px; width: 60%">
+                        <h4>Prašymo sukūrimas</h4>
+                        <br />
+                        <div style="padding-bottom: 5px; padding-top: 5px;">Pasirinkite išvykimo datą: </div>
+                        <div>
+                            <div>
+                                <span>Kryptis: </span>
+                                <select id="direction">
+                                    <option value="0">Žemė - Marsas</option>
+                                    <option value="1">Marsas - Žemė</option>
+                                </select>
+                                <span style="padding-left: 75px;">Išvykimo data: </span>
+                                <input style="margin-bottom: 10px;" type="text" id="datepicker" autocomplete="off" onchange="enterFlightDate()">
+                                <br />
+                                <span style="padding-left:250px;" id="secondDate"></span>
+                                <br />
+                                <span style="padding-left:250px;" id="calcPrice"></span>
+                            </div>
+                            <br />
+                            <br />
+                            <div>
+                                <a href="#" class="btn btn-success registerFlightButton" style="margin-left:250px;" id="submit">Registruoti naują skrydį</a>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <a href="#" class="btn btn-success registerFlightButton" id="submit" style="margin-left: 20px;">Registruoti naują skrydį</a>
+                    
+                <div style="height: 500px; width: 40%">
+                    <div style="border: 1px solid black; border-radius: 5px; padding: 5px; padding-bottom: 20px; margin-bottom: 10px; height: 245px;">
+                        <h4>Patvirtinta kelionė iš Žemės į Marsą</h4>
+                        @Html.ActionLink("Peržiūrėti", "MainPage", "Home", null, new { @class = "btn btn-primary action", @style="float: right;" })
+                    </div>
+                    <div style="border: 1px solid black; border-radius: 5px; padding: 5px; padding-bottom: 20px; height: 245px;">
+                        <h4>Patvirtinta kelionė iš Marso į Žemę</h4>
+                        @Html.ActionLink("Peržiūrėti", "MainPage", "Home", null, new { @class = "btn btn-primary action", @style="float: right;" })
                     </div>
                 </div>
+                </div>
+                
 
                 <br />
                 <br />
@@ -74,19 +97,21 @@
 
         $('#submit').click(function (e) {
             e.preventDefault();
-            window.location.href = "@Url.Action("submitFlightRequestDates", "FlightRequest")" + '?date1=' + $('#datepicker').val() + '&date2=' + $('#secondDate').text().slice(15,25) + '&direction=' + $('#direction').find('option:selected').val()  + '&price=' + $('#secondDate').text().slice(34);
+            window.location.href = "@Url.Action("submitFlightRequestDates", "FlightRequest")" + '?date1=' + $('#datepicker').val() + '&date2=' + $('#secondDate').text().slice(15,25) + '&direction=' + $('#direction').find('option:selected').val()  + '&price=' + $('#calcPrice').text().slice(7);
         });
 
         function enterFlightDate() {
             //tikrinti ar ne tuscia, ar ne nesamone, ar sitam menesi sitais metais
             if ($('#datepicker').val() == "") {
                 $("#secondDate").text("");
+                $('#calcPrice').text("");
                 $('.registerFlightButton').hide();
                 return;
             }
 
             if (Date.parse($('#datepicker').val() == NaN)) {
                 $("#secondDate").text("");
+                $('#calcPrice').text("");
                 $('.registerFlightButton').hide();
                 return;
             }
@@ -105,7 +130,8 @@
                         res = result.DateEarth;
                     }
                     console.log(result);
-                    $("#secondDate").text("Atvykimo data: " + convertToJavaScriptDate(res) + ", kaina: " + result.Price / 10);
+                    $("#secondDate").text("Atvykimo data: " + convertToJavaScriptDate(res));
+                    $('#calcPrice').text("Kaina: " + result.Price / 10);
                     $('.registerFlightButton').show();
                 },
                 failure: function (error) {

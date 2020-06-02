@@ -170,6 +170,7 @@
     <Compile Include="Controllers\FlightController.cs" />
     <Compile Include="Controllers\FlightRequestController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\PlansController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -182,6 +183,8 @@
     <Compile Include="Models\Flight.cs" />
     <Compile Include="Models\FlightRequest.cs" />
     <Compile Include="Models\FoodPlan.cs" />
+    <Compile Include="Models\Payment.cs" />
+    <Compile Include="Models\PaymentAPI.cs" />
     <Compile Include="Models\SportPlan.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -270,6 +273,8 @@
     <Content Include="Views\Plans\PlansSelectionForm.cshtml" />
     <Content Include="Views\FlightRequest\FlightRequestSummaryForm.cshtml" />
     <Content Include="Views\Flight\FlightList.cshtml" />
+    <Content Include="Views\Payment\PaymentForm.cshtml" />
+    <Content Include="Views\Payment\PaymentPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
