@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using MELV_IS.Models;
 using MySql.Data.MySqlClient;
+using MELV_IS.Controllers;
 
 namespace MELV_IS.Controllers
 {
@@ -26,7 +27,17 @@ namespace MELV_IS.Controllers
 
         public void CancelFlight(int id)
         {
-
+            bool temp = MELV_IS.Controllers.PaymentController.ReturnPayments(id);
+            //if payment return succeeded
+            if(temp)
+            {
+                MELV_IS.Models.Flight.RemoveFlight(id);
+                ViewBag.removed = "Skrydis pašalintas";
+            }
+            else
+            {
+                ViewBag.removed = "Nepavyko gražinti pinigų ir skrydis nepašalintas";
+            }
         }
 
         public ActionResult SelectedFlight(int id)

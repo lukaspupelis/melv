@@ -71,6 +71,25 @@ namespace MELV_IS.Models
             DB.execute();
         }
 
+        public static void RemoveFlight(int id)
+        {
+            //Deletes all made payments
+            DB.loadQuery("DELETE FROM payments where fk_flight=?id");
+            DB.Command.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
+            DB.execute();
+
+            //Deletes flight requests
+            DB.loadQuery("DELETE FROM flight_requests where fk_flight=?id");
+            DB.Command.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
+            DB.execute();
+
+            //Deletes flight
+            DB.loadQuery("DELETE FROM flights where id=?id");
+            DB.Command.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
+            DB.execute();
+        }
+
+        //Pasiziureti ka cia tiksliai norejom kadangi jis turi buti sunkesnis
         public static Flight SelectFlightWithData(int id)
         {
             Flight flight = new Flight();
