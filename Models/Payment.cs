@@ -50,6 +50,13 @@ namespace MELV_IS.Models
             return payments;
         }
 
+        public Payment(Flight flight)
+        {
+            Date = DateTime.Now;
+            Flight = flight;
+            Client = new Client((int)HttpContext.Current.Session["user"]);
+        }
+
         public Payment(int id)
         {
             ID = id;
