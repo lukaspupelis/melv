@@ -30,12 +30,12 @@ namespace MELV_IS.Controllers
                 if (userFlights.Count > 0 && userFlights[0].ID != 0)
                 {
                     Session["flight_mars"] = userFlights[0].ID;
-                    Session["flight_mars_ddate"] = "";
+                    Session["flight_mars_ddate"] = userFlights[0].DepartureDate;
                 }
                 else
                 {
                     Session["flight_mars"] = -1;
-                    Session["flight_mars_ddate"] = userFlights[0].DepartureDate;
+                    Session["flight_mars_ddate"] = "";
                 }
                 if (userFlights1.Count > 0 && userFlights1[0].ID != 0)
                 {
