@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "FlightRequestSummaryForm";
+}
+
+<h2>FlightRequestSummaryForm</h2>
+
+<div>
+    <p>
+        Išskridimo data:
+
+        <text id="date1">@ViewBag.date1</text>
+    </p>
+    <p>
+        Atskridimo data:
+        <text id="date2">@ViewBag.date2</text>
+    </p>
+    <p>
+        Skrydžio kryptis:
+        @{
+            if (ViewBag.direction == "1")
+            {
+                <text>Marsas -> Žemė</text>
+            }
+            else
+            {
+                <text>Žemė -> Marsas</text>
+            }
+        }
+        <text hidden id="direction">@ViewBag.direction</text>
+
+    </p>
+    <p>
+        Skrydžio kaina:
+        <text id="price">@ViewBag.price</text>
+    </p>
+    <p>
+        Pramogų planas:
+        <text id="ePlanId" hidden>@ViewBag.entertainmentPlanId</text>
+        <text>@ViewBag.entertainmentPlan</text>
+    </p>
+    <p>
+        Maisto planas:
+        <text id="fPlanId" hidden>@ViewBag.foodPlanId</text>
+        <text>@ViewBag.foodPlan</text>
+    </p>
+    <p>
+        Sporto planas:
+        <text id="sPlanId" hidden>@ViewBag.sportPlanId</text>
+        <text>@ViewBag.sportPlan</text>
+    </p>
+
+    <p>
+        <a href="#" class="btn btn-success registerFlightButton" id="submit" style="margin-left: 20px;">Registruoti naują skrydį</a>
+    </p>
+
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            $("#submit").click(function (event) {
+                event.preventDefault();
+                $('<div title="Patvirtinimo iššoktukas"></div>').dialog({
+                    open: function (event, ui) {
+                        $(this).html("Pridėti kelionės prašymą?");
+                    },
+                    close: function () {
+                        $(this).remove();
+                    },
+                    resizable: false,
+                    height: 140,
+                    modal: true,
+                    buttons: {
+                        'Taip': function () {
+                            $(this).dialog('close');
+                            window.location.href = "@Url.Action("submitFlightRequest", "FlightRequest")"
+                                + '?date1=' + $('#date1').text() + '&date2=' + $('#date2').text() + '&price=' + $('#price').text()
+                                + '&direction=' + $('#direction').text()
+                                + '&foodPlanID=' + $('#fPlanId').text()
+                                + '&entertainmentPlanId=' + $('#ePlanId').text()
+                                + '&sportPlanId=' + $('#sPlanId').text()
+
+                        },
+                        'Ne': function () {
+                            $(this).dialog('close');
+                            window.location.href = "@Url.Action("cancelSubmission", "FlightRequest")"
+                        }
+                    }
+                });
+            });
+        });
+
+        
+    </script>
+}
+

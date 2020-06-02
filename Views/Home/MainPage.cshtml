@@ -79,7 +79,7 @@
 
         $('#submit').click(function (e) {
             e.preventDefault();
-            window.location.href = "@Url.Action("submitFlightRequestDates", "FlightRequest")" + '?date1=' + $('#datepicker').val() + '&date2=' + $('#secondDate').text().slice(15) + '&direction=' + $('#direction').find('option:selected').val();
+            window.location.href = "@Url.Action("submitFlightRequestDates", "FlightRequest")" + '?date1=' + $('#datepicker').val() + '&date2=' + $('#secondDate').text().slice(15,25) + '&direction=' + $('#direction').find('option:selected').val()  + '&price=' + $('#secondDate').text().slice(34);
         });
 
         function enterFlightDate() {
@@ -110,7 +110,7 @@
                         res = result.DateEarth;
                     }
                     console.log(result);
-                    $("#secondDate").text("Atvykimo data: " + convertToJavaScriptDate(res));
+                    $("#secondDate").text("Atvykimo data: " + convertToJavaScriptDate(res) + ", kaina: " + result.Price / 10);
                     $('.registerFlightButton').show();
                 },
                 failure: function (error) {
