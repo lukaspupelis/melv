@@ -24,18 +24,15 @@ namespace MELV_IS.Controllers
 
             for (int iii = 0; iii < 2; iii++)
             {
-                List<FlightRequest> flightRequests = new List<FlightRequest>();
-                foreach (var item in allFlightRequests.Where(x => x.Direction == (iii == 0 ? false : true)))
-                {
-                    flightRequests.Add(item);
-                }
+                List<FlightRequest> flightRequests = allFlightRequests.Where(x => x.Direction == (iii == 0 ? false : true)).ToList();
+                
 
                 int distinctClients = flightRequests.Select(x => x.Client.ID).Distinct().Count();
 
                 if (distinctClients < 10)
                 {
                     ViewData["FlightCreationForm_Error" + iii] = "Užsiregistravo per mažai žmonių!";
-                    break;
+                    continue;
                 }
 
                 DateTime nextMonthDate = DateTime.Today.AddMonths(1);

@@ -25,9 +25,12 @@ namespace MELV_IS.Controllers
             return View(flights);
         }
 
-        public void CancelFlight(int id)
+        public ActionResult CancelFlight(int id)
         {
             bool temp = MELV_IS.Controllers.PaymentController.ReturnPayments(id);
+            
+            //temp = false;
+            
             //if payment return succeeded
             if(temp)
             {
@@ -37,7 +40,10 @@ namespace MELV_IS.Controllers
             else
             {
                 ViewBag.removed = "Nepavyko gražinti pinigų ir skrydis nepašalintas";
+                return View("FlightPage", new Flight(id));
             }
+            ViewBag.removed = "Skrydis buvo pašalintas";
+            return View("FlightList", MELV_IS.Models.Flight.SelectFlights());
         }
 
         public ActionResult SelectedFlight(int id)
@@ -51,9 +57,11 @@ namespace MELV_IS.Controllers
         {
             MELV_IS.Models.Flight.UpdateFlight(id);
 
-            Flight flight = MELV_IS.Models.Flight.SelectFlightWithData(id);
+            //Flight flight = MELV_IS.Models.Flight.SelectFlightWithData(id);
+            List<Flight> flights = MELV_IS.Models.Flight.SelectFlights();
+            
             ViewBag.Updated = "Skrydis patvirtintas!";
-            return View("FlightPage", flight);
+            return View("FlightList", flights);
         }
 
         public ActionResult submit(string date1, string date2, string direction)
