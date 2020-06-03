@@ -16,6 +16,7 @@
                 <div class="row">
                     @Html.ActionLink("Registruoti skrydį", "FlightCreationForm", "FlightRequest", null, new { @class = "btn btn-primary action" })
                 </div>
+                <br />
                 <div class="row">
                     @Html.ActionLink("Skrydžių sąrašas", "FlightList", "Flight", null, new { @class = "btn btn-primary action" })
                 </div>
@@ -33,7 +34,7 @@
                         <div>
                             <div>
                                 <span>Kryptis: </span>
-                                <select id="direction"  onchange="enterFlightDate()">
+                                <select id="direction" onchange="enterFlightDate()">
                                     <option value="0">Žemė - Marsas</option>
                                     <option value="1">Marsas - Žemė</option>
                                 </select>
@@ -83,7 +84,7 @@
                     </div>
                 </div>
                 </div>
-                
+
 
                 <br />
                 <br />

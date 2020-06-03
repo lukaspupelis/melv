@@ -13,11 +13,28 @@
 <p style="color:green"><b>@ViewBag.updated</b></p>
 <p style="color:green"><b>@ViewBag.removed</b></p>
 <table class="table table-striped datatable">
+    <thead>
+        <tr style="background-color: lightblue">
+            <th>
+                @Html.DisplayNameFor(model => model.Direction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DepartureDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArrivalDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Confirmed)
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
     <body>
         @foreach (var item in Model)
         {
             <tr>
-                <td>@Html.DisplayFor(modelItem => item.ID)</td>
                 <td>
                     @{
                         if (item.Direction)
@@ -40,12 +57,11 @@
                         }
                         else
                         {
-                            <text>Atšauktas</text>
+                            <text>Užregistruotas</text>
                         }
                     }
                 </td>
-                <td>@Html.ActionLink("Atidaryti", "SelectedFlight", "Flight", new { id = item.ID }, new { @class = "btn btn-primary action" })</td>
-                <td></td>
+                <td>@Html.ActionLink("Peržiūrėti", "SelectedFlight", "Flight", new { id = item.ID }, new { @class = "btn btn-primary action" })</td>
             </tr>
         }
 
