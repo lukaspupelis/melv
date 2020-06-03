@@ -30,7 +30,7 @@ namespace MELV_IS.Controllers
                 if (userFlights.Count > 0 && userFlights[0].ID != 0)
                 {
                     Session["flight_mars"] = userFlights[0].ID;
-                    Session["flight_mars_ddate"] = userFlights[0].DepartureDate;
+                    Session["flight_mars_ddate"] = userFlights[0].DepartureDate.ToString("yyyy-MM-dd");
                 }
                 else
                 {
@@ -40,7 +40,7 @@ namespace MELV_IS.Controllers
                 if (userFlights1.Count > 0 && userFlights1[0].ID != 0)
                 {
                     Session["flight_earth"] = userFlights1[0].ID;
-                    Session["flight_earth_ddate"] = userFlights1[0].DepartureDate;
+                    Session["flight_earth_ddate"] = userFlights1[0].DepartureDate.ToString("yyyy-MM-dd");
                 }
                 else
                 {
@@ -75,7 +75,7 @@ namespace MELV_IS.Controllers
                 if (userFlights.Count > 0 && userFlights[0].ID != 0)
                 {
                     Session["flight_mars"] = userFlights[0].ID;
-                    Session["flight_mars_ddate"] = userFlights[0].DepartureDate;
+                    Session["flight_mars_ddate"] = userFlights[0].DepartureDate.ToString("yyyy-MM-dd");
                 }
                 else
                 {
@@ -85,7 +85,7 @@ namespace MELV_IS.Controllers
                 if (userFlights1.Count > 0 && userFlights1[0].ID != 0)
                 {
                     Session["flight_earth"] = userFlights1[0].ID;
-                    Session["flight_earth_ddate"] = userFlights1[0].DepartureDate;
+                    Session["flight_earth_ddate"] = userFlights1[0].DepartureDate.ToString("yyyy-MM-dd");
                 }
                 else
                 {
