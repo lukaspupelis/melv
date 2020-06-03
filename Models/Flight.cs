@@ -14,6 +14,7 @@ namespace MELV_IS.Models
     {
         [Key]
         public int ID { get; set; }
+        [DisplayName("Kryptis")]
         public bool Direction { get; set; }
 
         [DisplayName("Išvykimo data")]
@@ -23,6 +24,7 @@ namespace MELV_IS.Models
         [DisplayName("Atvykimo data")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime ArrivalDate { get; set; }
+        [DisplayName("Ar patvirtintas?")]
         public bool Confirmed { get; set; }
         public Administrator Administrator { get; set; }
 
