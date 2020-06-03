@@ -17,5 +17,10 @@ namespace MELV_IS.Models
             //Payment job
             return true;
         }
+
+        public static bool paymentData(Payment payment)
+        {
+            return true;
+        }
     }
 }

@@ -34,12 +34,37 @@ namespace MELV_IS.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                     Payment.insertPayment(payment);
+                    payment.Date = DateTime.Now;
+                    payment.Flight = new Flight(id);
+                    payment.Client = new Client(Convert.ToInt32(Session["user"]));
                 }
 
-                return RedirectToAction("PaymentPage");
+                return View("PaymentPage", payment);
             }
             catch
+            {
+                return View(payment);
+            }
+        }
+
+        public ActionResult PaymentPage(Payment payment)
+        {
+            return View(payment);
+        }
+
+        public ActionResult paymentData(int clientID, int flightID, decimal sum, string cardNumber)
+        {
+            Client client = new Client(clientID);
+            Flight flight = new Flight(flightID);
+            Payment payment = new Payment(-1, DateTime.Now, cardNumber, sum, flight, client);
+            bool status = PaymentAPI.paymentData(payment);
+
+            if (status)
+            {
+                Payment.insertPayment(payment);
+                return RedirectToAction("SelectedFlight", "Flight", new { id = payment.Flight.ID });
+            }
+            else
             {
                 return View(payment);
             }
