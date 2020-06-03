@@ -61,11 +61,19 @@
         </dl>
     </div>
     <p>
-        @Html.ActionLink("Patvirtinti", "UpdateFlight", "Flight", new { id = Model.ID }, new { @class = "btn btn-primary action" })
-
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal_">
-            Atšaukti
-        </button>
+        @{
+            if ((bool)Session["admin"])
+            {
+                @Html.ActionLink("Patvirtinti", "UpdateFlight", "Flight", new { id = Model.ID }, new { @class = "btn btn-primary action" })
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal_">
+                    Atšaukti
+                </button>
+            }
+            else
+            {
+                @Html.ActionLink("Mokėti", "PaymentForm", "Payment", new { id = Model.ID }, new { @class = "btn btn-danger action" })
+            }
+        }
 
         <div class="modal fade" id="exampleModal_" role="dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">

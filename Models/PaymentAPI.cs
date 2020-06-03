@@ -12,6 +12,10 @@ namespace MELV_IS.Models
 {
     public class PaymentAPI
     {
-
+        public static Boolean ReturnPayments(List<Payment> payments)
+        {
+            //Payment job
+            return true;
+        }
     }
 }
