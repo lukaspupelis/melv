@@ -10,43 +10,50 @@
     <meta name="viewport" content="width=device-width" />
     <title>FlightList</title>
 </head>
+<p style="color:green"><b>@ViewBag.updated</b></p>
+<p style="color:green"><b>@ViewBag.removed</b></p>
 <table class="table table-striped datatable">
     <body>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>@Html.DisplayFor(modelItem => item.ID)</td>
-            <td>
-                @{
-                    if (item.Direction)
-                    {
-                        <text>Marsas - Žemė</text>
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.ID)</td>
+                <td>
+                    @{
+                        if (item.Direction)
+                        {
+                            <text>Marsas - Žemė</text>
+                        }
+                        else
+                        {
+                            <text>Žemė - Marsas</text>
+                        }
                     }
-                    else
-                    {
-                        <text>Žemė - Marsas</text>
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.DepartureDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.ArrivalDate)</td>
+                <td>
+                    @{
+                        if (item.Confirmed)
+                        {
+                            <text>Patvirtintas</text>
+                        }
+                        else
+                        {
+                            <text>Atšauktas</text>
+                        }
                     }
-                }
-            </td>
-            <td>@Html.DisplayFor(modelItem => item.DepartureDate)</td>
-            <td>@Html.DisplayFor(modelItem => item.ArrivalDate)</td>
-            <td>
-                @{
-                    if (item.Confirmed)
-                    {
-                        <text>Patvirtintas</text>
-                    }
-                    else
-                    {
-                        <text>Atšauktas</text>
-                    }
-                }
-            </td>
-            <td>@Html.ActionLink("Atidaryti", "SelectedFlight", "Flight", new { id = item.ID}, new { @class = "btn btn-primary action" })</td>
-            <td></td>
-        </tr>
+                </td>
+                <td>@Html.ActionLink("Atidaryti", "SelectedFlight", "Flight", new { id = item.ID }, new { @class = "btn btn-primary action" })</td>
+                <td></td>
+            </tr>
         }
 
     </body>
 </table>
+@{ 
+    ViewBag.updated = "";
+    ViewBag.removed = "";
+}
+
 </html>
