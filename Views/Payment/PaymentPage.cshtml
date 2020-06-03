@@ -1,7 +1,19 @@
-﻿
+﻿@model MELV_IS.Models.Payment
+
 @{
     ViewBag.Title = "PaymentPage";
 }
 
-<h2>PaymentPage</h2>
+<h2>Mokėjimas</h2>
+<br />
+<br />
+<p>Mokėtojas: @Model.Client.Name  @Model.Client.LastName</p>
+<p>Sumokėta: @Model.Sum</p>
+<p>Skrydis išvyksta: @Model.Flight.DepartureDate</p>
 
+@Html.ActionLink("Tvirtinti", "paymentData", "Payment", new { area = "", clientID = Model.Client.ID, flightID = Model.Flight.ID, sum = Model.Sum, cardNumber = Model.CardNumber },
+    new { @class = "btn btn-danger action" })
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

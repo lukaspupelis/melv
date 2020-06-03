@@ -50,11 +50,15 @@ namespace MELV_IS.Models
             return payments;
         }
 
+        public Payment()
+        {
+
+        }
+
         public Payment(Flight flight)
         {
-            Date = DateTime.Now;
             Flight = flight;
-            Client = new Client((int)HttpContext.Current.Session["user"]);
+            Client = new Client(Convert.ToInt32(HttpContext.Current.Session["user"]));
         }
 
         public Payment(int id)
@@ -87,12 +91,11 @@ namespace MELV_IS.Models
         {
             try
             {
-                DB.loadQuery(@"INSERT INTO payments(date,card_number,sum,fk_flight,fk_client)VALUES(?date,?card_number,?sum,?fk_flight,?fk_client);");
-                DB.Command.Parameters.Add("?date", MySqlDbType.DateTime).Value = payment.Date;
+                DB.loadQuery(@"INSERT INTO payments(date,card_number,sum,fk_flight,fk_client)VALUES(now(),?card_number,?sum,?fk_flight,?fk_client);");
                 DB.Command.Parameters.Add("?card_number", MySqlDbType.VarChar).Value = payment.CardNumber;
                 DB.Command.Parameters.Add("?sum", MySqlDbType.Decimal).Value = payment.Sum;
-                DB.Command.Parameters.Add("?fk_flight", MySqlDbType.Int32).Value = payment.Flight;
-                DB.Command.Parameters.Add("?fk_client", MySqlDbType.Int32).Value = payment.Client;
+                DB.Command.Parameters.Add("?fk_flight", MySqlDbType.Int32).Value = payment.Flight.ID;
+                DB.Command.Parameters.Add("?fk_client", MySqlDbType.Int32).Value = payment.Client.ID;
                 DB.execute();
                 return true;
             }
