@@ -18,9 +18,13 @@ namespace MELV_IS.Models
 
         public DateTime Date { get; set; }
 
+        [DisplayName("Banko kortelės nr.")]
+        [Required(ErrorMessage = "Šis laukas privalomas")]
         public string CardNumber { get; set; }
 
-        public decimal Sum { get; set; }
+        [DisplayName("Mokėjimo suma")]
+        [Required(ErrorMessage = "Šis laukas privalomas")]
+        public decimal? Sum { get; set; }
 
         public Flight Flight { get; set; }
 
@@ -52,7 +56,7 @@ namespace MELV_IS.Models
 
         public Payment()
         {
-
+            Sum = 0;
         }
 
         public Payment(Flight flight)

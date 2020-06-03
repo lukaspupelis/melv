@@ -57,7 +57,7 @@
             <dd>
                 @Html.DisplayFor(model => model.Confirmed)
             </dd>
-
+            
         </dl>
     </div>
     <p>
@@ -71,7 +71,10 @@
             }
             else
             {
-                @Html.ActionLink("Mokėti", "PaymentForm", "Payment", new { id = Model.ID }, new { @class = "btn btn-danger action" })
+                if ((int)Session["flight_paymentID"] == 0)
+                {
+                    @Html.ActionLink("Mokėti", "PaymentForm", "Payment", new { id = Model.ID }, new { @class = "btn btn-danger action" })
+                }
             }
         }
 

@@ -95,7 +95,7 @@ namespace MELV_IS.Models
         public static Flight SelectFlightWithData(int id)
         {
             Flight flight = new Flight();
-            DB.loadQuery("select * from flights where id=?id");
+            DB.loadQuery("select f.*,p.id as paymentID from flights f left join payments p on f.id=p.fk_flight where f.id=?id");
             DB.Command.Parameters.Add("?id", MySqlDbType.Int32).Value = id;
             DataTable dt = DB.query();
             foreach (DataRow item in dt.Rows)
@@ -106,6 +106,7 @@ namespace MELV_IS.Models
                 flight.ArrivalDate = Convert.ToDateTime(item["arrival_date"]);
                 flight.Confirmed = Convert.ToBoolean(item["confirmed"]);
                 flight.Administrator = new Administrator(Convert.ToInt32(item["fk_administrator"]));
+                HttpContext.Current.Session["flight_paymentID"] = item["paymentID"] == DBNull.Value ? 0 : Convert.ToInt32(item["paymentID"]);
             }
             return flight;
         }
