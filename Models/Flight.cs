@@ -152,7 +152,8 @@ namespace MELV_IS.Models
         public static List<Flight> selectClientFlights(int clientid)
         {
             List<Flight> flights = new List<Flight>();
-            DB.loadQuery("select f.id, f.direction, f.departure_date, f.arrival_date, f.confirmed, f.fk_administrator, fr.price from flight_requests fr left join flights f on fr.fk_flight=f.id where fr.fk_client=?id and f.departure_date > now()");
+            DB.loadQuery("select f.id, f.direction, f.departure_date, f.arrival_date, f.confirmed, f.fk_administrator, fr.price from flight_requests fr left join flights f on fr.fk_flight=f.id " +
+                "where fr.fk_client=?id and f.departure_date > now() order by departure_date desc");
             DB.Command.Parameters.Add("?id", MySqlDbType.Int32).Value = clientid;
             DataTable dt = DB.query();
             Flight flight = new Flight();
